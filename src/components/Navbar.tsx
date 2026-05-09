@@ -5,19 +5,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
 
 const navLinks = [
-  { label: "Home",         href: "#home" },
-  { label: "Services",     href: "#services" },
-  { label: "About",        href: "#about" },
-  { label: "Portfolio",    href: "#portfolio" },
+  { label: "Home", href: "#home" },
+  { label: "Services", href: "#services" },
+  { label: "About", href: "#about" },
+  { label: "Portfolio", href: "#portfolio" },
   { label: "Testimonials", href: "#testimonials" },
-  { label: "Contact",      href: "#contact" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
-  const [isDark,   setIsDark]   = useState(false);
-  const [isOpen,   setIsOpen]   = useState(false);
+  const [isDark, setIsDark] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [active,   setActive]   = useState("Home");
+  const [active, setActive] = useState("Home");
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
@@ -45,11 +45,10 @@ export default function Navbar() {
       initial={{ y: -72, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.55, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
           ? "bg-white/90 dark:bg-[#071630]/90 backdrop-blur-2xl border-b border-[#c4dcfc]/40 dark:border-[#1f3557]/60 shadow-lg shadow-[#0170f4]/5"
           : "bg-transparent"
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="flex items-center justify-between h-16">
@@ -75,11 +74,10 @@ export default function Navbar() {
                 onClick={() => setActive(link.label)}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
-                className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors ${
-                  active === link.label
+                className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors ${active === link.label
                     ? "text-[#0170f4] dark:text-[#8fbbf9]"
                     : "text-[#4a6080] dark:text-[#8496b2] hover:text-[#10274b] dark:hover:text-white"
-                }`}
+                  }`}
               >
                 {active === link.label && (
                   <motion.span
@@ -132,8 +130,8 @@ export default function Navbar() {
             >
               <AnimatePresence mode="wait">
                 {isOpen
-                  ? <motion.span key="x"    initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.14 }}><X    size={17} /></motion.span>
-                  : <motion.span key="menu" initial={{ rotate:  90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate:-90, opacity: 0 }} transition={{ duration: 0.14 }}><Menu size={17} /></motion.span>
+                  ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.14 }}><X size={17} /></motion.span>
+                  : <motion.span key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.14 }}><Menu size={17} /></motion.span>
                 }
               </AnimatePresence>
             </motion.button>

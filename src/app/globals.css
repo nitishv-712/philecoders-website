@@ -128,3 +128,21 @@ body {
   to   { transform: translateX(-50%); }
 }
 .marquee-track { animation: marquee 28s linear infinite; }
+
+/* ── 3D & Cursor ── */
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  a, button, input, textarea, select {
+    cursor: none !important;
+  }
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
