@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
 const WORDS = ["Innovate.", "Build.", "Scale.", "Deliver.", "Inspire."];
 
 function TypewriterText() {
-  const [index, setIndex] = useState(0);
+  const [index,     setIndex]     = useState(0);
   const [displayed, setDisplayed] = useState("");
-  const [deleting, setDeleting] = useState(false);
+  const [deleting,  setDeleting]  = useState(false);
 
   useEffect(() => {
     const word = WORDS[index];
@@ -31,39 +31,20 @@ function TypewriterText() {
   );
 }
 
-function Particle({ p, mouseX, mouseY }: { p: any, mouseX: any, mouseY: any }) {
-  const xOffset = useTransform(mouseX, [-0.5, 0.5], [-p.z, p.z]);
-  const yOffset = useTransform(mouseY, [-0.5, 0.5], [-p.z, p.z]);
-
-  return (
-    <motion.div
-      className="absolute rounded-full"
-      style={{
-        left: `${p.x}%`, top: `${p.y}%`,
-        width: p.size, height: p.size,
-        background: p.id % 3 === 0 ? "#0170f4" : p.id % 3 === 1 ? "#8fbbf9" : "#0157c2",
-        x: xOffset,
-        y: yOffset,
-      }}
-      animate={{ y: [0, -70, 0], opacity: [0, 0.8, 0], scale: [0, 1.2, 0] }}
-      transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
-    />
-  );
-}
-
-function ParticleField({ mouseX, mouseY }: { mouseX: any, mouseY: any }) {
+// Pure CSS particles — zero JS per frame
+function ParticleField() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   const particles = useMemo(
-    () => Array.from({ length: 75 }, (_, i) => ({
+    () => Array.from({ length: 40 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 3 + 1,
-      duration: Math.random() * 15 + 10,
-      delay: Math.random() * 6,
-      z: Math.random() * 50 + 10, // depth factor for parallax
+      size: Math.random() * 2.5 + 0.8,
+      duration: Math.random() * 12 + 8,
+      delay: Math.random() * 8,
+      color: i % 3 === 0 ? "#0170f4" : i % 3 === 1 ? "#8fbbf9" : "#0157c2",
     })),
     []
   );
@@ -71,9 +52,20 @@ function ParticleField({ mouseX, mouseY }: { mouseX: any, mouseY: any }) {
   if (!mounted) return null;
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none perspective-1000">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {particles.map((p) => (
-        <Particle key={p.id} p={p} mouseX={mouseX} mouseY={mouseY} />
+        <div
+          key={p.id}
+          className="absolute rounded-full"
+          style={{
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            width: p.size,
+            height: p.size,
+            background: p.color,
+            animation: `particleFloat ${p.duration}s ${p.delay}s ease-in-out infinite`,
+          }}
+        />
       ))}
     </div>
   );
@@ -82,63 +74,49 @@ function ParticleField({ mouseX, mouseY }: { mouseX: any, mouseY: any }) {
 const stats = [
   { value: "50+", label: "Projects Delivered" },
   { value: "30+", label: "Happy Clients" },
-  { value: "5+", label: "Years Experience" },
+  { value: "5+",  label: "Years Experience" },
   { value: "99%", label: "Client Satisfaction" },
 ];
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yScroll = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
+  const y       = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
-
-  const bgX = useTransform(mouseXSpring, [-0.5, 0.5], ["-2%", "2%"]);
-  const bgY = useTransform(mouseYSpring, [-0.5, 0.5], ["-2%", "2%"]);
-
-  const cardRotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const cardRotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
-
+  // Single lightweight mouse parallax — CSS transform, no spring chain
+  const cardRef = useRef<HTMLDivElement>(null);
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    x.set(mouseX / rect.width - 0.5);
-    y.set(mouseY / rect.height - 0.5);
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const rx = ((e.clientY - rect.top)  / rect.height - 0.5) * 14;
+    const ry = ((e.clientX - rect.left) / rect.width  - 0.5) * -14;
+    cardRef.current.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`;
   };
-
   const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+    if (cardRef.current)
+      cardRef.current.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg)";
   };
 
   return (
     <section
       id="home"
       ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden dot-grid"
       style={{ background: "linear-gradient(160deg, #071630 0%, #10274b 55%, #0157c2 100%)" }}
     >
-      {/* Interactive Radial glows */}
-      <motion.div className="absolute inset-0 pointer-events-none" style={{ x: bgX, y: bgY }}>
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full blur-[80px]"
-          style={{ background: "radial-gradient(circle, rgba(1,112,244,0.15) 0%, transparent 60%)" }} />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full blur-[80px]"
-          style={{ background: "radial-gradient(circle, rgba(143,187,249,0.1) 0%, transparent 60%)" }} />
-      </motion.div>
+      {/* Static radial glows — no motion value needed */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(1,112,244,0.18) 0%, transparent 70%)" }} />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(143,187,249,0.08) 0%, transparent 70%)" }} />
+      </div>
 
-      <ParticleField mouseX={mouseXSpring} mouseY={mouseYSpring} />
+      <ParticleField />
 
       <motion.div
-        style={{ y: yScroll, opacity }}
+        style={{ y, opacity }}
         className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 pt-24 pb-16 w-full"
       >
         <div className="flex flex-col lg:flex-row items-center gap-16">
@@ -149,7 +127,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-7 cursor-pointer hover:scale-105 transition-transform"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-7"
               style={{ background: "rgba(1,112,244,0.12)", borderColor: "rgba(143,187,249,0.3)", color: "#8fbbf9" }}
             >
               <span className="w-2 h-2 rounded-full bg-[#0170f4] animate-pulse" />
@@ -182,7 +160,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start relative z-20"
+              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <motion.a
                 href="#portfolio"
@@ -198,7 +176,7 @@ export default function Hero() {
               </motion.a>
               <motion.a
                 href="#contact"
-                whileHover={{ scale: 1.05, borderColor: "#0170f4", color: "#8fbbf9" }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
                 className="flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 font-semibold text-base transition-all"
                 style={{ borderColor: "rgba(143,187,249,0.3)", color: "#c4cdd9" }}
@@ -220,7 +198,7 @@ export default function Hero() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.6 + i * 0.1 }}
-                  className="text-center lg:text-left cursor-default hover:scale-105 transition-transform"
+                  className="text-center lg:text-left"
                 >
                   <div className="text-2xl sm:text-3xl font-black gradient-text">{s.value}</div>
                   <div className="text-xs sm:text-sm mt-1" style={{ color: "#4a6080" }}>{s.label}</div>
@@ -229,85 +207,79 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right — 3D interactive visual */}
+          {/* Right — CSS tilt card, no motion value chain */}
           <motion.div
             initial={{ opacity: 0, scale: 0.82 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.85, delay: 0.3 }}
-            className="flex-1 relative hidden lg:flex items-center justify-center perspective-1000"
+            className="flex-1 relative hidden lg:flex items-center justify-center"
           >
-            <motion.div
-              className="relative w-[400px] h-[400px] transform-style-3d"
-              style={{ rotateX: cardRotateX, rotateY: cardRotateY }}
-            >
+            <div className="relative w-[400px] h-[400px]">
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 rounded-full border-2 border-dashed pointer-events-none"
-                style={{ borderColor: "rgba(1,112,244,0.25)", translateZ: -20 }}
+                className="absolute inset-0 rounded-full border-2 border-dashed"
+                style={{ borderColor: "rgba(1,112,244,0.25)" }}
               />
               <motion.div
                 animate={{ rotate: -360 }}
                 transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-10 rounded-full border pointer-events-none"
-                style={{ borderColor: "rgba(143,187,249,0.15)", translateZ: -10 }}
+                className="absolute inset-10 rounded-full border"
+                style={{ borderColor: "rgba(143,187,249,0.15)" }}
               />
               {[1, 2].map((n) => (
                 <motion.div
                   key={n}
-                  className="absolute inset-0 rounded-full pointer-events-none"
-                  style={{ border: "1px solid rgba(1,112,244,0.3)", translateZ: 0 }}
+                  className="absolute inset-0 rounded-full"
+                  style={{ border: "1px solid rgba(1,112,244,0.3)" }}
                   animate={{ scale: [1, 1.6], opacity: [0.4, 0] }}
                   transition={{ duration: 3, delay: n * 1.2, repeat: Infinity, ease: "easeOut" }}
                 />
               ))}
 
-              {/* 3D Center Card */}
-              <motion.div
-                className="absolute inset-[72px] rounded-3xl p-[2px] shadow-[0_0_80px_rgba(1,112,244,0.3)] transform-style-3d cursor-default"
-                style={{ background: "linear-gradient(135deg, #0170f4, #8fbbf9)", translateZ: 40 }}
-                whileHover={{ scale: 1.05 }}
+              {/* CSS tilt — no motion values */}
+              <div
+                ref={cardRef}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                className="absolute inset-[72px] rounded-3xl p-[2px] shadow-2xl transition-transform duration-100 cursor-default"
+                style={{ background: "linear-gradient(135deg, #0170f4, #8fbbf9)" }}
               >
-                <div className="w-full h-full rounded-3xl flex flex-col items-center justify-center gap-4 p-6 overflow-hidden relative"
+                <div className="w-full h-full rounded-3xl flex flex-col items-center justify-center gap-4 p-6"
                   style={{ background: "#071630" }}>
-                  <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle at top right, #0170f4, transparent)" }} />
-
-                  <motion.div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-2xl relative z-10"
-                    style={{ background: "linear-gradient(135deg, #10274b, #0170f4)", translateZ: 30 }}
-                  >
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
+                    style={{ background: "linear-gradient(135deg, #10274b, #0170f4)" }}>
                     <span className="text-xl font-black text-white">PC</span>
-                  </motion.div>
-                  <motion.div className="text-center relative z-10" style={{ translateZ: 20 }}>
+                  </div>
+                  <div className="text-center">
                     <div className="font-bold text-white text-base">PhileCoders</div>
                     <div className="text-xs mt-1" style={{ color: "#4a6080" }}>Building Digital Excellence</div>
-                  </motion.div>
-                  <motion.div className="flex gap-2 relative z-10" style={{ translateZ: 10 }}>
+                  </div>
+                  <div className="flex gap-2">
                     {["⚡", "🚀", "💎"].map((e, i) => (
                       <motion.span key={i} animate={{ y: [0, -6, 0] }} transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }} className="text-lg">
                         {e}
                       </motion.span>
                     ))}
-                  </motion.div>
+                  </div>
                 </div>
-              </motion.div>
+              </div>
 
               {[0, 60, 120, 180, 240, 300].map((deg, i) => (
                 <motion.div
                   key={i}
-                  className="absolute w-3 h-3 rounded-full pointer-events-none"
+                  className="absolute w-3 h-3 rounded-full"
                   style={{
                     background: i % 2 === 0 ? "#0170f4" : "#8fbbf9",
                     top: "50%", left: "50%", marginTop: -6, marginLeft: -6,
                     x: Math.cos((deg * Math.PI) / 180) * 190,
                     y: Math.sin((deg * Math.PI) / 180) * 190,
-                    translateZ: i % 2 === 0 ? 50 : -20
                   }}
                   animate={{ rotate: [0, 360] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                 />
               ))}
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </motion.div>
@@ -316,7 +288,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-20 pointer-events-auto"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
         style={{ color: "#4a6080" }}
       >
         <span className="text-[10px] font-semibold tracking-[0.2em] uppercase">Scroll</span>

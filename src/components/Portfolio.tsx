@@ -33,13 +33,9 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
       {/* Banner */}
       <div className="h-36 relative overflow-hidden flex items-center justify-center"
         style={{ background: "linear-gradient(135deg, #10274b 0%, #0157c2 60%, #0170f4 100%)" }}>
-        <motion.span
-          className="text-5xl"
-          animate={{ scale: [1, 1.1, 1], rotate: [0, 4, -4, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        >
+        <span className="text-5xl group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
           {project.emoji}
-        </motion.span>
+        </span>
         <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity" />
         <span className="absolute top-3 right-3 px-2.5 py-1 text-xs font-semibold rounded-full"
           style={{ background: "rgba(1,112,244,0.3)", color: "#c4dcfc", backdropFilter: "blur(8px)" }}>

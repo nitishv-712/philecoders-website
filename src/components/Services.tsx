@@ -1,202 +1,96 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Globe, Smartphone, Palette, Database, Shield, Zap, ArrowRight } from "lucide-react";
 
 const services = [
-  {
-    icon: Globe,    title: "Web Development",
-    description: "Full-stack web applications built with Next.js, React, and modern technologies that scale with your business.",
-    tags: ["Next.js", "React", "TypeScript"],
-  },
-  {
-    icon: Smartphone, title: "Mobile Apps",
-    description: "Cross-platform mobile applications for iOS and Android using React Native with native performance.",
-    tags: ["React Native", "iOS", "Android"],
-  },
-  {
-    icon: Palette,  title: "UI/UX Design",
-    description: "Beautiful, intuitive interfaces designed with user psychology in mind. From wireframes to pixel-perfect designs.",
-    tags: ["Figma", "Prototyping", "Design Systems"],
-  },
-  {
-    icon: Database, title: "Backend & APIs",
-    description: "Robust, scalable backend systems and RESTful/GraphQL APIs that power your applications reliably.",
-    tags: ["Node.js", "PostgreSQL", "GraphQL"],
-  },
-  {
-    icon: Shield,   title: "DevOps & Cloud",
-    description: "CI/CD pipelines, cloud infrastructure on AWS/GCP, and containerization for seamless deployments.",
-    tags: ["AWS", "Docker", "CI/CD"],
-  },
-  {
-    icon: Zap,      title: "Performance Optimization",
-    description: "Audit and optimize your existing applications for speed, SEO, and Core Web Vitals excellence.",
-    tags: ["Core Web Vitals", "SEO", "Caching"],
-  },
+  { icon: Globe,      title: "Web Development",         description: "Full-stack web applications built with Next.js, React, and modern technologies that scale with your business.", tags: ["Next.js", "React", "TypeScript"] },
+  { icon: Smartphone, title: "Mobile Apps",             description: "Cross-platform mobile applications for iOS and Android using React Native with native performance.",            tags: ["React Native", "iOS", "Android"] },
+  { icon: Palette,    title: "UI/UX Design",            description: "Beautiful, intuitive interfaces designed with user psychology in mind. From wireframes to pixel-perfect designs.", tags: ["Figma", "Prototyping", "Design Systems"] },
+  { icon: Database,   title: "Backend & APIs",          description: "Robust, scalable backend systems and RESTful/GraphQL APIs that power your applications reliably.",               tags: ["Node.js", "PostgreSQL", "GraphQL"] },
+  { icon: Shield,     title: "DevOps & Cloud",          description: "CI/CD pipelines, cloud infrastructure on AWS/GCP, and containerization for seamless deployments.",              tags: ["AWS", "Docker", "CI/CD"] },
+  { icon: Zap,        title: "Performance Optimization", description: "Audit and optimize your existing applications for speed, SEO, and Core Web Vitals excellence.",                tags: ["Core Web Vitals", "SEO", "Caching"] },
 ];
 
 function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
-  const ref   = useRef<HTMLDivElement>(null);
+  const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-70px" });
-  const Icon  = service.icon;
+  const Icon   = service.icon;
 
-  // 3D Tilt Setup
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 20 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
-
-  const [hovered, setHovered] = useState(false);
-
+  // CSS-only tilt — no motion values, no springs
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-
-    x.set(xPct);
-    y.set(yPct);
+    const el   = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const rx   = ((e.clientY - rect.top)  / rect.height - 0.5) * 10;
+    const ry   = ((e.clientX - rect.left) / rect.width  - 0.5) * -10;
+    el.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
   };
-
-  const handleMouseLeave = () => {
-    setHovered(false);
-    x.set(0);
-    y.set(0);
+  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.currentTarget.style.transform = "perspective(600px) rotateX(0deg) rotateY(0deg) translateY(0)";
   };
 
   return (
     <motion.div
-      className="perspective-1000"
       ref={ref}
       initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.09 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="group relative p-6 rounded-2xl border cursor-default overflow-hidden"
+      style={{
+        background: "rgba(255,255,255,0.03)",
+        borderColor: "rgba(143,187,249,0.12)",
+        transition: "transform 0.15s ease, box-shadow 0.3s ease",
+        willChange: "transform",
+      }}
     >
-      <motion.div
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={handleMouseLeave}
-        className="group relative p-6 rounded-2xl border card-hover cursor-default overflow-hidden transform-style-3d h-full"
-        style={{
-          background: "rgba(255,255,255,0.03)",
-          borderColor: "rgba(143,187,249,0.12)",
-          rotateX,
-          rotateY,
-        }}
-        whileHover={{ z: 30 }}
-      >
-        {/* Glow effect matching mouse position inside the card */}
-        <motion.div
-          className="absolute pointer-events-none rounded-2xl opacity-0 transition-opacity duration-300"
-          style={{
-            background: "radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(1,112,244,0.15), transparent 40%)",
-            opacity: hovered ? 1 : 0,
-            inset: "-2px", // Cover borders
-          }}
-          animate={{
-            "--mouse-x": useTransform(x, [-0.5, 0.5], ["0%", "100%"]),
-            "--mouse-y": useTransform(y, [-0.5, 0.5], ["0%", "100%"]),
-          } as any}
-        />
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none"
+        style={{ background: "linear-gradient(135deg, rgba(1,87,194,0.08) 0%, rgba(1,112,244,0.04) 100%)" }} />
 
-        {/* Hover fill */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none"
-          style={{ background: "linear-gradient(135deg, rgba(1,87,194,0.08) 0%, rgba(1,112,244,0.04) 100%)" }} />
+      <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 shadow-lg"
+        style={{ background: "linear-gradient(135deg, #10274b 0%, #0170f4 100%)" }}>
+        <Icon size={20} className="text-white" />
+      </div>
 
-        {/* Card Content shifted slightly forward on hover for parallax */}
-        <motion.div
-          style={{ translateZ: 40 }}
-          className="relative pointer-events-none"
-        >
-          {/* Icon */}
-          <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 shadow-lg"
-            style={{ background: "linear-gradient(135deg, #10274b 0%, #0170f4 100%)" }}>
-            <Icon size={20} className="text-white" />
-          </div>
+      <h3 className="text-base font-bold text-white mb-2.5">{service.title}</h3>
+      <p className="text-sm leading-relaxed mb-5" style={{ color: "#8496b2" }}>{service.description}</p>
 
-          <h3 className="text-base font-bold text-white mb-2.5">{service.title}</h3>
-          <p className="text-sm leading-relaxed mb-5" style={{ color: "#8496b2" }}>{service.description}</p>
+      <div className="flex flex-wrap gap-1.5 mb-5">
+        {service.tags.map((tag) => (
+          <span key={tag} className="px-2.5 py-1 text-xs font-medium rounded-full"
+            style={{ background: "rgba(1,112,244,0.12)", color: "#8fbbf9" }}>
+            {tag}
+          </span>
+        ))}
+      </div>
 
-          <div className="flex flex-wrap gap-1.5 mb-5 pointer-events-auto">
-            {service.tags.map((tag) => (
-              <span key={tag} className="px-2.5 py-1 text-xs font-medium rounded-full"
-                style={{ background: "rgba(1,112,244,0.12)", color: "#8fbbf9" }}>
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          <motion.div
-            className="flex items-center gap-1 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto"
-            style={{ color: "#0170f4" }}
-            animate={{ x: [0, 4, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            Learn more <ArrowRight size={13} />
-          </motion.div>
-        </motion.div>
-      </motion.div>
+      <div className="flex items-center gap-1 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity"
+        style={{ color: "#0170f4" }}>
+        Learn more <ArrowRight size={13} className="ml-0.5" />
+      </div>
     </motion.div>
   );
 }
 
 export default function Services() {
-  const ref   = useRef<HTMLDivElement>(null);
+  const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-90px" });
-
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  const handleGlobalMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
 
   return (
     <section id="services" className="py-24 sm:py-32 relative overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #071630 0%, #10274b 100%)" }}
-      onMouseMove={handleGlobalMouseMove}
-    >
-      {/* Dynamic Background Spotlight */}
-      <motion.div
-        className="absolute pointer-events-none rounded-full blur-[100px]"
-        animate={{
-          x: mousePosition.x - 400,
-          y: mousePosition.y - 400,
-        }}
-        transition={{ type: "spring", stiffness: 50, damping: 20 }}
-        style={{
-          width: 800,
-          height: 800,
-          background: "radial-gradient(circle, rgba(1,112,244,0.06) 0%, transparent 70%)",
-        }}
-      />
-
+      style={{ background: "linear-gradient(180deg, #071630 0%, #10274b 100%)" }}>
       <div className="absolute top-0 left-0 right-0 h-px"
         style={{ background: "linear-gradient(90deg, transparent, rgba(1,112,244,0.4), transparent)" }} />
 
-      <div className="relative max-w-7xl mx-auto px-5 sm:px-8 z-10">
-        <div ref={ref} className="text-center mb-16 perspective-1000">
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-8">
+        <div ref={ref} className="text-center mb-16">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4 transform-style-3d"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
             style={{ background: "rgba(1,112,244,0.1)", borderColor: "rgba(143,187,249,0.2)", color: "#8fbbf9" }}
-            whileHover={{ scale: 1.05, z: 20 }}
           >
             <Zap size={13} /> What We Do
           </motion.div>
