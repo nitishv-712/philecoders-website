@@ -3,12 +3,11 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, Phone, MapPin, Send, MessageSquare, CheckCircle2 } from "lucide-react";
+import content from "@/content.json";
 
-const contactInfo = [
-  { icon: Mail,   label: "Email",    value: "hello@philecoders.com" },
-  { icon: Phone,  label: "Phone",    value: "+1 (555) 123-4567" },
-  { icon: MapPin, label: "Location", value: "San Francisco, CA" },
-];
+const { contact: c } = content;
+
+const iconMap: Record<string, React.ElementType> = { Mail, Phone, MapPin };
 
 export default function Contact() {
   const ref    = useRef<HTMLDivElement>(null);
@@ -26,11 +25,8 @@ export default function Contact() {
   };
 
   return (
-    <section
-      id="contact"
-      className="py-24 sm:py-32 relative overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #071630 0%, #10274b 100%)" }}
-    >
+    <section id="contact" className="py-24 sm:py-32 relative overflow-hidden"
+      style={{ background: "linear-gradient(180deg, #071630 0%, #10274b 100%)" }}>
       <div className="absolute top-0 left-0 right-0 h-px"
         style={{ background: "linear-gradient(90deg, transparent, rgba(1,112,244,0.4), transparent)" }} />
       <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none"
@@ -44,7 +40,7 @@ export default function Contact() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
             style={{ background: "rgba(1,112,244,0.1)", borderColor: "rgba(143,187,249,0.2)", color: "#8fbbf9" }}
           >
-            <MessageSquare size={13} /> Get In Touch
+            <MessageSquare size={13} /> {c.badge}
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 18 }}
@@ -52,7 +48,7 @@ export default function Contact() {
             transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl font-black text-white mb-4"
           >
-            Let&apos;s Build <span className="gradient-text">Together</span>
+            {c.heading} <span className="gradient-text">{c.headingAccent}</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 18 }}
@@ -61,20 +57,19 @@ export default function Contact() {
             className="text-lg max-w-2xl mx-auto"
             style={{ color: "#8496b2" }}
           >
-            Have a project in mind? We&apos;d love to hear about it. Send us a message and we&apos;ll get back to you within 24 hours.
+            {c.subheading}
           </motion.p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
-          {/* Info */}
           <motion.div
             initial={{ opacity: 0, x: -28 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-2 flex flex-col gap-5"
           >
-            {contactInfo.map((item, i) => {
-              const Icon = item.icon;
+            {c.info.map((item, i) => {
+              const Icon = iconMap[item.icon] ?? Mail;
               return (
                 <motion.div
                   key={item.label}
@@ -103,15 +98,12 @@ export default function Contact() {
               className="mt-1 p-6 rounded-2xl text-white shadow-xl"
               style={{ background: "linear-gradient(135deg, #0157c2 0%, #0170f4 100%)", boxShadow: "0 20px 48px rgba(1,112,244,0.3)" }}
             >
-              <div className="text-2xl mb-3">🚀</div>
-              <h3 className="font-bold text-lg mb-2">Ready to start?</h3>
-              <p className="text-sm leading-relaxed" style={{ color: "#c4dcfc" }}>
-                Most projects kick off within 48 hours of our first call. Let&apos;s make something great together.
-              </p>
+              <div className="text-2xl mb-3">{c.cta.emoji}</div>
+              <h3 className="font-bold text-lg mb-2">{c.cta.heading}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: "#c4dcfc" }}>{c.cta.text}</p>
             </motion.div>
           </motion.div>
 
-          {/* Form */}
           <motion.div
             initial={{ opacity: 0, x: 28 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -134,22 +126,18 @@ export default function Contact() {
                   >
                     <CheckCircle2 size={30} style={{ color: "#0170f4" }} />
                   </motion.div>
-                  <h3 className="text-xl font-bold text-white mb-2">Message Sent!</h3>
-                  <p className="text-sm" style={{ color: "#8496b2" }}>
-                    Thanks for reaching out. We&apos;ll get back to you within 24 hours.
-                  </p>
+                  <h3 className="text-xl font-bold text-white mb-2">{c.form.successTitle}</h3>
+                  <p className="text-sm" style={{ color: "#8496b2" }}>{c.form.successText}</p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {[
-                      { id: "name",  label: "Your Name",    placeholder: "John Doe",         type: "text" },
-                      { id: "email", label: "Email Address", placeholder: "john@example.com", type: "email" },
+                      { id: "name",  label: "Your Name",    placeholder: c.form.namePlaceholder,  type: "text" },
+                      { id: "email", label: "Email Address", placeholder: c.form.emailPlaceholder, type: "email" },
                     ].map((field) => (
                       <div key={field.id}>
-                        <label className="block text-sm font-semibold mb-2" style={{ color: "#8fbbf9" }}>
-                          {field.label}
-                        </label>
+                        <label className="block text-sm font-semibold mb-2" style={{ color: "#8fbbf9" }}>{field.label}</label>
                         <input
                           type={field.type}
                           placeholder={field.placeholder}
@@ -168,7 +156,7 @@ export default function Contact() {
                     <label className="block text-sm font-semibold mb-2" style={{ color: "#8fbbf9" }}>Subject</label>
                     <input
                       type="text"
-                      placeholder="Project inquiry, collaboration..."
+                      placeholder={c.form.subjectPlaceholder}
                       required
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
@@ -182,7 +170,7 @@ export default function Contact() {
                     <label className="block text-sm font-semibold mb-2" style={{ color: "#8fbbf9" }}>Message</label>
                     <textarea
                       rows={5}
-                      placeholder="Tell us about your project..."
+                      placeholder={c.form.messagePlaceholder}
                       required
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -208,7 +196,7 @@ export default function Contact() {
                         style={{ borderColor: "rgba(255,255,255,0.3)", borderTopColor: "#fff" }}
                       />
                     ) : (
-                      <> Send Message <Send size={15} /> </>
+                      <>{c.form.submitLabel} <Send size={15} /></>
                     )}
                   </motion.button>
                 </form>

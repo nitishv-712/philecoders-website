@@ -3,20 +3,12 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { ExternalLink, GitFork, Layers } from "lucide-react";
+import content from "@/content.json";
 
-const categories = ["All", "Web App", "Mobile", "E-Commerce", "SaaS"];
+const { portfolio: p } = content;
 
-const projects = [
-  { title: "FinTrack Dashboard", category: "SaaS",       description: "Real-time financial analytics platform with AI-powered insights and interactive charts.", tags: ["Next.js", "TypeScript", "D3.js"],          emoji: "📊" },
-  { title: "ShopNest",           category: "E-Commerce", description: "Full-featured e-commerce platform with inventory management and payment integration.",    tags: ["React", "Node.js", "Stripe"],              emoji: "🛍️" },
-  { title: "MediConnect",        category: "Mobile",     description: "Healthcare mobile app connecting patients with doctors for seamless telemedicine.",        tags: ["React Native", "Firebase", "WebRTC"],      emoji: "🏥" },
-  { title: "TaskFlow Pro",       category: "SaaS",       description: "Project management SaaS with real-time collaboration, Kanban boards, and analytics.",     tags: ["Next.js", "PostgreSQL", "Socket.io"],      emoji: "✅" },
-  { title: "EduLearn Platform",  category: "Web App",    description: "Interactive e-learning platform with video courses, quizzes, and progress tracking.",     tags: ["React", "AWS", "GraphQL"],                 emoji: "🎓" },
-  { title: "FoodieApp",          category: "Mobile",     description: "Food delivery mobile app with real-time order tracking and restaurant discovery.",        tags: ["React Native", "Maps API", "Node.js"],     emoji: "🍕" },
-];
-
-function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
-  const ref   = useRef<HTMLDivElement>(null);
+function ProjectCard({ project, index }: { project: typeof p.projects[0]; index: number }) {
+  const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
@@ -30,7 +22,6 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
       className="group relative rounded-2xl overflow-hidden border card-hover"
       style={{ background: "rgba(255,255,255,0.02)", borderColor: "rgba(143,187,249,0.1)" }}
     >
-      {/* Banner */}
       <div className="h-36 relative overflow-hidden flex items-center justify-center"
         style={{ background: "linear-gradient(135deg, #10274b 0%, #0157c2 60%, #0170f4 100%)" }}>
         <span className="text-5xl group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
@@ -55,14 +46,16 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
           ))}
         </div>
         <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
-          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: "#0170f4" }}>
+          <motion.a href={project.liveUrl} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: "#0170f4" }}
+            target="_blank" rel="noopener noreferrer">
             <ExternalLink size={12} /> Live Demo
-          </motion.button>
-          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: "#8496b2" }}>
+          </motion.a>
+          <motion.a href={project.sourceUrl} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: "#8496b2" }}
+            target="_blank" rel="noopener noreferrer">
             <GitFork size={12} /> Source
-          </motion.button>
+          </motion.a>
         </div>
       </div>
     </motion.div>
@@ -71,10 +64,10 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
 
 export default function Portfolio() {
   const [active, setActive] = useState("All");
-  const ref   = useRef<HTMLDivElement>(null);
+  const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-90px" });
 
-  const filtered = active === "All" ? projects : projects.filter((p) => p.category === active);
+  const filtered = active === "All" ? p.projects : p.projects.filter((proj) => proj.category === active);
 
   return (
     <section id="portfolio" className="py-24 sm:py-32 relative overflow-hidden"
@@ -90,7 +83,7 @@ export default function Portfolio() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
             style={{ background: "rgba(1,112,244,0.1)", borderColor: "rgba(143,187,249,0.2)", color: "#8fbbf9" }}
           >
-            <Layers size={13} /> Our Work
+            <Layers size={13} /> {p.badge}
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 18 }}
@@ -98,7 +91,7 @@ export default function Portfolio() {
             transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl font-black text-white mb-4"
           >
-            Featured <span className="gradient-text">Projects</span>
+            {p.heading} <span className="gradient-text">{p.headingAccent}</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 18 }}
@@ -107,29 +100,24 @@ export default function Portfolio() {
             className="text-lg max-w-2xl mx-auto"
             style={{ color: "#8496b2" }}
           >
-            A selection of projects we&apos;re proud to have built for our clients.
+            {p.subheading}
           </motion.p>
         </div>
 
-        {/* Filter */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.3 }}
           className="flex flex-wrap justify-center gap-2 mb-10"
         >
-          {categories.map((cat) => (
+          {p.categories.map((cat) => (
             <motion.button
               key={cat}
               onClick={() => setActive(cat)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="relative px-5 py-2 text-sm font-semibold rounded-full transition-all"
-              style={
-                active === cat
-                  ? { color: "#fff" }
-                  : { color: "#8496b2", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(143,187,249,0.15)" }
-              }
+              style={active === cat ? { color: "#fff" } : { color: "#8496b2", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(143,187,249,0.15)" }}
             >
               {active === cat && (
                 <motion.span
@@ -146,7 +134,7 @@ export default function Portfolio() {
 
         <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <AnimatePresence mode="popLayout">
-            {filtered.map((p, i) => <ProjectCard key={p.title} project={p} index={i} />)}
+            {filtered.map((proj, i) => <ProjectCard key={proj.title} project={proj} index={i} />)}
           </AnimatePresence>
         </motion.div>
       </div>

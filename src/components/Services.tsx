@@ -3,27 +3,23 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Globe, Smartphone, Palette, Database, Shield, Zap, ArrowRight } from "lucide-react";
+import content from "@/content.json";
 
-const services = [
-  { icon: Globe,      title: "Web Development",         description: "Full-stack web applications built with Next.js, React, and modern technologies that scale with your business.", tags: ["Next.js", "React", "TypeScript"] },
-  { icon: Smartphone, title: "Mobile Apps",             description: "Cross-platform mobile applications for iOS and Android using React Native with native performance.",            tags: ["React Native", "iOS", "Android"] },
-  { icon: Palette,    title: "UI/UX Design",            description: "Beautiful, intuitive interfaces designed with user psychology in mind. From wireframes to pixel-perfect designs.", tags: ["Figma", "Prototyping", "Design Systems"] },
-  { icon: Database,   title: "Backend & APIs",          description: "Robust, scalable backend systems and RESTful/GraphQL APIs that power your applications reliably.",               tags: ["Node.js", "PostgreSQL", "GraphQL"] },
-  { icon: Shield,     title: "DevOps & Cloud",          description: "CI/CD pipelines, cloud infrastructure on AWS/GCP, and containerization for seamless deployments.",              tags: ["AWS", "Docker", "CI/CD"] },
-  { icon: Zap,        title: "Performance Optimization", description: "Audit and optimize your existing applications for speed, SEO, and Core Web Vitals excellence.",                tags: ["Core Web Vitals", "SEO", "Caching"] },
-];
+const { services: s } = content;
 
-function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
+const iconMap: Record<string, React.ElementType> = {
+  Globe, Smartphone, Palette, Database, Shield, Zap,
+};
+
+function ServiceCard({ item, index }: { item: typeof s.items[0]; index: number }) {
   const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-70px" });
-  const Icon   = service.icon;
+  const Icon   = iconMap[item.icon] ?? Zap;
 
-  // CSS-only tilt — no motion values, no springs
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el   = e.currentTarget;
-    const rect = el.getBoundingClientRect();
-    const rx   = ((e.clientY - rect.top)  / rect.height - 0.5) * 10;
-    const ry   = ((e.clientX - rect.left) / rect.width  - 0.5) * -10;
+    const el = e.currentTarget, rect = el.getBoundingClientRect();
+    const rx = ((e.clientY - rect.top)  / rect.height - 0.5) * 10;
+    const ry = ((e.clientX - rect.left) / rect.width  - 0.5) * -10;
     el.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
   };
   const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -54,11 +50,11 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
         <Icon size={20} className="text-white" />
       </div>
 
-      <h3 className="text-base font-bold text-white mb-2.5">{service.title}</h3>
-      <p className="text-sm leading-relaxed mb-5" style={{ color: "#8496b2" }}>{service.description}</p>
+      <h3 className="text-base font-bold text-white mb-2.5">{item.title}</h3>
+      <p className="text-sm leading-relaxed mb-5" style={{ color: "#8496b2" }}>{item.description}</p>
 
       <div className="flex flex-wrap gap-1.5 mb-5">
-        {service.tags.map((tag) => (
+        {item.tags.map((tag) => (
           <span key={tag} className="px-2.5 py-1 text-xs font-medium rounded-full"
             style={{ background: "rgba(1,112,244,0.12)", color: "#8fbbf9" }}>
             {tag}
@@ -92,7 +88,7 @@ export default function Services() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
             style={{ background: "rgba(1,112,244,0.1)", borderColor: "rgba(143,187,249,0.2)", color: "#8fbbf9" }}
           >
-            <Zap size={13} /> What We Do
+            <Zap size={13} /> {s.badge}
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 18 }}
@@ -100,7 +96,7 @@ export default function Services() {
             transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl font-black text-white mb-4"
           >
-            Services That <span className="gradient-text">Drive Results</span>
+            {s.heading} <span className="gradient-text">{s.headingAccent}</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 18 }}
@@ -109,12 +105,12 @@ export default function Services() {
             className="text-lg max-w-2xl mx-auto"
             style={{ color: "#8496b2" }}
           >
-            From concept to deployment, we deliver end-to-end digital solutions tailored to your unique business needs.
+            {s.subheading}
           </motion.p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {services.map((s, i) => <ServiceCard key={s.title} service={s} index={i} />)}
+          {s.items.map((item, i) => <ServiceCard key={item.title} item={item} index={i} />)}
         </div>
       </div>
     </section>

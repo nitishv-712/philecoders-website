@@ -3,23 +3,18 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import content from "@/content.json";
 
-const testimonials = [
-  { name: "Sarah Johnson",  role: "CEO, TechVentures",    avatar: "SJ", rating: 5, text: "PhileCoders transformed our vision into a stunning product. Their attention to detail, technical expertise, and commitment to deadlines is unmatched. Our platform now handles 10x the traffic with zero issues." },
-  { name: "Marcus Chen",    role: "Founder, ShopNest",    avatar: "MC", rating: 5, text: "Working with PhileCoders was a game-changer. They didn't just build what we asked for — they improved our ideas and delivered a product that exceeded every expectation. Highly recommend!" },
-  { name: "Priya Patel",    role: "CTO, MediConnect",     avatar: "PP", rating: 5, text: "The team's technical depth is impressive. They navigated complex healthcare compliance requirements while delivering a beautiful, intuitive app. Our users love it and so do we." },
-  { name: "David Williams", role: "PM, EduLearn",         avatar: "DW", rating: 5, text: "PhileCoders delivered our e-learning platform on time and on budget. The code quality is exceptional — clean, well-documented, and easy to maintain. A true professional team." },
-  { name: "Aisha Rahman",   role: "Director, FinTrack",   avatar: "AR", rating: 5, text: "From the first call to final delivery, PhileCoders was professional, responsive, and genuinely invested in our success. The dashboard they built is now our biggest competitive advantage." },
-];
+const { testimonials: t } = content;
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
-  const ref   = useRef<HTMLDivElement>(null);
+  const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-90px" });
 
-  const prev = () => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
-  const next = () => setCurrent((c) => (c + 1) % testimonials.length);
-  const t = testimonials[current];
+  const prev = () => setCurrent((c) => (c - 1 + t.items.length) % t.items.length);
+  const next = () => setCurrent((c) => (c + 1) % t.items.length);
+  const item = t.items[current];
 
   return (
     <section id="testimonials" className="py-24 sm:py-32 relative overflow-hidden bg-white dark:bg-[#071630]">
@@ -38,7 +33,7 @@ export default function Testimonials() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
             style={{ background: "rgba(1,112,244,0.08)", borderColor: "rgba(143,187,249,0.2)", color: "#8fbbf9" }}
           >
-            <Star size={13} className="fill-current" /> Client Stories
+            <Star size={13} className="fill-current" /> {t.badge}
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 18 }}
@@ -46,7 +41,7 @@ export default function Testimonials() {
             transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl font-black text-[#10274b] dark:text-white mb-4"
           >
-            What Our <span className="gradient-text">Clients Say</span>
+            {t.heading} <span className="gradient-text">{t.headingAccent}</span>
           </motion.h2>
         </div>
 
@@ -75,7 +70,7 @@ export default function Testimonials() {
               </div>
 
               <div className="flex gap-1 mb-6">
-                {Array.from({ length: t.rating }).map((_, i) => (
+                {Array.from({ length: item.rating }).map((_, i) => (
                   <motion.div key={i} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.07 }}>
                     <Star size={17} className="fill-current" style={{ color: "#0170f4" }} />
                   </motion.div>
@@ -83,35 +78,31 @@ export default function Testimonials() {
               </div>
 
               <p className="text-lg sm:text-xl leading-relaxed mb-8 italic text-[#2d4463] dark:text-[#c4cdd9]">
-                &ldquo;{t.text}&rdquo;
+                &ldquo;{item.text}&rdquo;
               </p>
 
               <div className="flex items-center gap-4">
                 <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg"
                   style={{ background: "linear-gradient(135deg, #10274b, #0170f4)" }}>
-                  {t.avatar}
+                  {item.avatar}
                 </div>
                 <div>
-                  <div className="font-bold text-[#10274b] dark:text-white">{t.name}</div>
-                  <div className="text-sm" style={{ color: "#4a6080" }}>{t.role}</div>
+                  <div className="font-bold text-[#10274b] dark:text-white">{item.name}</div>
+                  <div className="text-sm" style={{ color: "#4a6080" }}>{item.role}</div>
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Controls */}
           <div className="flex items-center justify-between mt-8">
             <div className="flex gap-2">
-              {testimonials.map((_, i) => (
+              {t.items.map((_, i) => (
                 <motion.button
                   key={i}
                   onClick={() => setCurrent(i)}
                   whileHover={{ scale: 1.2 }}
                   className="h-2 rounded-full transition-all duration-300"
-                  style={{
-                    width: i === current ? 32 : 8,
-                    background: i === current ? "#0170f4" : "rgba(143,187,249,0.25)",
-                  }}
+                  style={{ width: i === current ? 32 : 8, background: i === current ? "#0170f4" : "rgba(143,187,249,0.25)" }}
                 />
               ))}
             </div>
@@ -130,29 +121,26 @@ export default function Testimonials() {
           </div>
         </motion.div>
 
-        {/* Mini cards */}
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-12">
-          {testimonials.map((t, i) => (
+          {t.items.map((ti, i) => (
             <motion.button
-              key={t.name}
+              key={ti.name}
               onClick={() => setCurrent(i)}
               initial={{ opacity: 0, y: 18 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.4 + i * 0.07 }}
               whileHover={{ scale: 1.03 }}
               className="p-3 rounded-xl border text-left transition-all"
-              style={
-                i === current
-                  ? { borderColor: "#0170f4", background: "rgba(1,112,244,0.1)" }
-                  : { borderColor: "rgba(143,187,249,0.1)", background: "rgba(255,255,255,0.02)" }
-              }
+              style={i === current
+                ? { borderColor: "#0170f4", background: "rgba(1,112,244,0.1)" }
+                : { borderColor: "rgba(143,187,249,0.1)", background: "rgba(255,255,255,0.02)" }}
             >
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold mb-2"
                 style={{ background: "linear-gradient(135deg, #10274b, #0170f4)" }}>
-                {t.avatar}
+                {ti.avatar}
               </div>
-              <div className="text-xs font-semibold text-[#10274b] dark:text-white truncate">{t.name}</div>
-              <div className="text-xs truncate" style={{ color: "#4a6080" }}>{t.role.split(",")[0]}</div>
+              <div className="text-xs font-semibold text-[#10274b] dark:text-white truncate">{ti.name}</div>
+              <div className="text-xs truncate" style={{ color: "#4a6080" }}>{ti.role.split(",")[0]}</div>
             </motion.button>
           ))}
         </div>

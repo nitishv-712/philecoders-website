@@ -3,16 +3,18 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import content from "@/content.json";
 
-const WORDS = ["Innovate.", "Build.", "Scale.", "Deliver.", "Inspire."];
+const { hero } = content;
 
 function TypewriterText() {
+  const words = hero.typewriterWords;
   const [index,     setIndex]     = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [deleting,  setDeleting]  = useState(false);
 
   useEffect(() => {
-    const word = WORDS[index];
+    const word = words[index];
     let t: ReturnType<typeof setTimeout>;
     if (!deleting && displayed.length < word.length)
       t = setTimeout(() => setDisplayed(word.slice(0, displayed.length + 1)), 95);
@@ -20,9 +22,9 @@ function TypewriterText() {
       t = setTimeout(() => setDeleting(true), 1800);
     else if (deleting && displayed.length > 0)
       t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 50);
-    else { setDeleting(false); setIndex((i) => (i + 1) % WORDS.length); }
+    else { setDeleting(false); setIndex((i) => (i + 1) % words.length); }
     return () => clearTimeout(t);
-  }, [displayed, deleting, index]);
+  }, [displayed, deleting, index, words]);
 
   return (
     <span className="gradient-text">
@@ -31,7 +33,6 @@ function TypewriterText() {
   );
 }
 
-// Pure CSS particles — zero JS per frame
 function ParticleField() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -58,10 +59,8 @@ function ParticleField() {
           key={p.id}
           className="absolute rounded-full"
           style={{
-            left: `${p.x}%`,
-            top: `${p.y}%`,
-            width: p.size,
-            height: p.size,
+            left: `${p.x}%`, top: `${p.y}%`,
+            width: p.size, height: p.size,
             background: p.color,
             animation: `particleFloat ${p.duration}s ${p.delay}s ease-in-out infinite`,
           }}
@@ -71,20 +70,12 @@ function ParticleField() {
   );
 }
 
-const stats = [
-  { value: "50+", label: "Projects Delivered" },
-  { value: "30+", label: "Happy Clients" },
-  { value: "5+",  label: "Years Experience" },
-  { value: "99%", label: "Client Satisfaction" },
-];
-
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y       = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
-  // Single lightweight mouse parallax — CSS transform, no spring chain
   const cardRef = useRef<HTMLDivElement>(null);
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -105,7 +96,6 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden dot-grid"
       style={{ background: "linear-gradient(160deg, #071630 0%, #10274b 55%, #0157c2 100%)" }}
     >
-      {/* Static radial glows — no motion value needed */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full"
           style={{ background: "radial-gradient(circle, rgba(1,112,244,0.18) 0%, transparent 70%)" }} />
@@ -120,8 +110,6 @@ export default function Hero() {
         className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 pt-24 pb-16 w-full"
       >
         <div className="flex flex-col lg:flex-row items-center gap-16">
-
-          {/* Left */}
           <div className="flex-1 text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
@@ -131,7 +119,7 @@ export default function Hero() {
               style={{ background: "rgba(1,112,244,0.12)", borderColor: "rgba(143,187,249,0.3)", color: "#8fbbf9" }}
             >
               <span className="w-2 h-2 rounded-full bg-[#0170f4] animate-pulse" />
-              Professional Software Development
+              {hero.badge}
             </motion.div>
 
             <motion.h1
@@ -140,9 +128,9 @@ export default function Hero() {
               transition={{ duration: 0.65, delay: 0.1 }}
               className="text-5xl sm:text-6xl lg:text-[5.5rem] font-black leading-[1.02] tracking-tight mb-6 text-white"
             >
-              We <TypewriterText />
+              {hero.headlinePre} <TypewriterText />
               <br />
-              <span style={{ color: "#8fbbf9" }}>Your Vision.</span>
+              <span style={{ color: "#8fbbf9" }}>{hero.headlinePost}</span>
             </motion.h1>
 
             <motion.p
@@ -152,8 +140,7 @@ export default function Hero() {
               className="text-lg sm:text-xl max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed"
               style={{ color: "#8496b2" }}
             >
-              PhileCoders crafts cutting-edge web applications, mobile solutions, and digital
-              experiences that drive real business growth.
+              {hero.description}
             </motion.p>
 
             <motion.div
@@ -163,25 +150,25 @@ export default function Hero() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <motion.a
-                href="#portfolio"
+                href={hero.ctaPrimary.href}
                 whileHover={{ scale: 1.05, boxShadow: "0 20px 48px rgba(1,112,244,0.45)" }}
                 whileTap={{ scale: 0.97 }}
                 className="group flex items-center justify-center gap-2 px-8 py-4 rounded-full text-white font-semibold text-base shadow-xl transition-all"
                 style={{ background: "linear-gradient(90deg, #0157c2 0%, #0170f4 100%)" }}
               >
-                View Our Work
+                {hero.ctaPrimary.label}
                 <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.4, repeat: Infinity }}>
                   <ArrowRight size={17} />
                 </motion.span>
               </motion.a>
               <motion.a
-                href="#contact"
+                href={hero.ctaSecondary.href}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
                 className="flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 font-semibold text-base transition-all"
                 style={{ borderColor: "rgba(143,187,249,0.3)", color: "#c4cdd9" }}
               >
-                Start a Project
+                {hero.ctaSecondary.label}
               </motion.a>
             </motion.div>
 
@@ -192,7 +179,7 @@ export default function Hero() {
               className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-14 pt-10"
               style={{ borderTop: "1px solid rgba(143,187,249,0.15)" }}
             >
-              {stats.map((s, i) => (
+              {hero.stats.map((s, i) => (
                 <motion.div
                   key={s.label}
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -207,7 +194,6 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right — CSS tilt card, no motion value chain */}
           <motion.div
             initial={{ opacity: 0, scale: 0.82 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -236,8 +222,6 @@ export default function Hero() {
                   transition={{ duration: 3, delay: n * 1.2, repeat: Infinity, ease: "easeOut" }}
                 />
               ))}
-
-              {/* CSS tilt — no motion values */}
               <div
                 ref={cardRef}
                 onMouseMove={handleMouseMove}
@@ -249,11 +233,11 @@ export default function Hero() {
                   style={{ background: "#071630" }}>
                   <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
                     style={{ background: "linear-gradient(135deg, #10274b, #0170f4)" }}>
-                    <span className="text-xl font-black text-white">PC</span>
+                    <span className="text-xl font-black text-white">{content.site.logo}</span>
                   </div>
                   <div className="text-center">
-                    <div className="font-bold text-white text-base">PhileCoders</div>
-                    <div className="text-xs mt-1" style={{ color: "#4a6080" }}>Building Digital Excellence</div>
+                    <div className="font-bold text-white text-base">{content.site.name}</div>
+                    <div className="text-xs mt-1" style={{ color: "#4a6080" }}>{content.site.tagline}</div>
                   </div>
                   <div className="flex gap-2">
                     {["⚡", "🚀", "💎"].map((e, i) => (
@@ -264,7 +248,6 @@ export default function Hero() {
                   </div>
                 </div>
               </div>
-
               {[0, 60, 120, 180, 240, 300].map((deg, i) => (
                 <motion.div
                   key={i}

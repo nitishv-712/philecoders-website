@@ -3,15 +3,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
+import content from "@/content.json";
 
-const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "Contact", href: "#contact" },
-];
+const { navbar, site } = content;
+const navLinks = navbar.links;
 
 export default function Navbar() {
   const [isDark, setIsDark] = useState(false);
@@ -57,11 +52,11 @@ export default function Navbar() {
           <motion.a href="#home" className="flex items-center gap-2.5" whileHover={{ scale: 1.02 }}>
             <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-md"
               style={{ background: "linear-gradient(135deg, #10274b 0%, #0170f4 100%)" }}>
-              <span className="text-xs font-black text-white tracking-tight">PC</span>
+              <span className="text-xs font-black text-white tracking-tight">{site.logo}</span>
             </div>
             <span className="font-bold text-[17px] tracking-tight">
-              <span className="gradient-text">Phile</span>
-              <span className="text-[#10274b] dark:text-white">Coders</span>
+              <span className="gradient-text">{site.name.slice(0, 5)}</span>
+              <span className="text-[#10274b] dark:text-white">{site.name.slice(5)}</span>
             </span>
           </motion.a>
 
@@ -120,11 +115,7 @@ export default function Navbar() {
               className="hidden md:flex items-center px-5 py-2 text-sm font-semibold text-white rounded-full shadow-lg shadow-[#0170f4]/25 transition-all"
               style={{ background: "linear-gradient(90deg, #10274b 0%, #0170f4 100%)" }}
             >
-              Get Started
-            </motion.a>
-
-            <motion.button
-              onClick={() => setIsOpen(!isOpen)}
+              {navbar.cta}
               whileTap={{ scale: 0.9 }}
               className="md:hidden w-9 h-9 rounded-full flex items-center justify-center bg-[#e8f2fe] dark:bg-[#1f3557] text-[#0157c2] dark:text-[#8fbbf9]"
             >
@@ -172,7 +163,7 @@ export default function Navbar() {
                 className="mt-2 px-4 py-3 text-sm font-semibold text-white text-center rounded-xl"
                 style={{ background: "linear-gradient(90deg, #10274b 0%, #0170f4 100%)" }}
               >
-                Get Started
+                {navbar.cta}
               </motion.a>
             </div>
           </motion.div>

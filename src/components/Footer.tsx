@@ -2,19 +2,13 @@
 
 import { motion } from "framer-motion";
 import { GitFork, Link2, Mail, ArrowUp } from "lucide-react";
+import content from "@/content.json";
 
-const footerLinks = {
-  Company:  ["About", "Services", "Portfolio", "Careers", "Blog"],
-  Services: ["Web Development", "Mobile Apps", "UI/UX Design", "Backend & APIs", "DevOps"],
-  Legal:    ["Privacy Policy", "Terms of Service", "Cookie Policy"],
+const { footer: f, site } = content;
+
+const socialIconMap: Record<string, React.ElementType> = {
+  GitHub: GitFork, Twitter: Link2, LinkedIn: Link2, Email: Mail,
 };
-
-const socials = [
-  { icon: GitFork, href: "#",                            label: "GitHub" },
-  { icon: Link2,   href: "#",                            label: "Twitter" },
-  { icon: Link2,   href: "#",                            label: "LinkedIn" },
-  { icon: Mail,    href: "mailto:hello@philecoders.com", label: "Email" },
-];
 
 export default function Footer() {
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -34,18 +28,18 @@ export default function Footer() {
             <motion.div whileHover={{ scale: 1.02 }} className="flex items-center gap-2.5 mb-4">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-md"
                 style={{ background: "linear-gradient(135deg, #10274b 0%, #0170f4 100%)" }}>
-                <span className="text-xs font-black text-white tracking-tight">PC</span>
+                <span className="text-xs font-black text-white tracking-tight">{site.logo}</span>
               </div>
               <span className="font-bold text-[17px] text-white tracking-tight">
-                <span className="gradient-text">Phile</span>Coders
+                <span className="gradient-text">{site.name.slice(0, 5)}</span>{site.name.slice(5)}
               </span>
             </motion.div>
             <p className="text-sm leading-relaxed mb-6 max-w-xs" style={{ color: "#4a6080" }}>
-              Building digital excellence through innovative software solutions. Your vision, our expertise.
+              {f.tagline}
             </p>
             <div className="flex gap-3">
-              {socials.map((s) => {
-                const Icon = s.icon;
+              {f.socials.map((s) => {
+                const Icon = socialIconMap[s.label] ?? Link2;
                 return (
                   <motion.a
                     key={s.label}
@@ -57,14 +51,8 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="w-9 h-9 rounded-full flex items-center justify-center transition-colors"
                     style={{ background: "rgba(1,112,244,0.12)", color: "#8496b2" }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "#0170f4";
-                      (e.currentTarget as HTMLElement).style.color = "#fff";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(1,112,244,0.12)";
-                      (e.currentTarget as HTMLElement).style.color = "#8496b2";
-                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#0170f4"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(1,112,244,0.12)"; (e.currentTarget as HTMLElement).style.color = "#8496b2"; }}
                   >
                     <Icon size={15} />
                   </motion.a>
@@ -74,7 +62,7 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          {Object.entries(footerLinks).map(([section, links]) => (
+          {Object.entries(f.links).map(([section, links]) => (
             <div key={section}>
               <h4 className="text-sm font-bold text-white mb-4">{section}</h4>
               <ul className="space-y-2.5">
@@ -97,15 +85,12 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4"
           style={{ borderTop: "1px solid rgba(143,187,249,0.08)" }}>
           <p className="text-xs" style={{ color: "#2d4463" }}>
-            © {new Date().getFullYear()} PhileCoders. All rights reserved.
+            © {new Date().getFullYear()} {f.copyright}
           </p>
-          <p className="text-xs" style={{ color: "#2d4463" }}>
-            Built with ❤️ using Next.js & Tailwind CSS
-          </p>
+          <p className="text-xs" style={{ color: "#2d4463" }}>{f.builtWith}</p>
           <motion.button
             onClick={scrollTop}
             whileHover={{ scale: 1.1, y: -2 }}

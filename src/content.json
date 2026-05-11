@@ -1,0 +1,258 @@
+{
+  "site": {
+    "name": "PhileCoders",
+    "tagline": "Your Ideas, Engineered",
+    "logo": "NF"
+  },
+  "navbar": {
+    "links": [
+      { "label": "Home",         "href": "#home" },
+      { "label": "Services",     "href": "#services" },
+      { "label": "About",        "href": "#about" },
+      { "label": "Portfolio",    "href": "#portfolio" },
+      { "label": "Testimonials", "href": "#testimonials" },
+      { "label": "Contact",      "href": "#contact" }
+    ],
+    "cta": "Start a Project"
+  },
+  "hero": {
+    "badge": "Trusted Software Development Partner",
+    "typewriterWords": ["Analyze.", "Design.", "Develop.", "Launch.", "Grow."],
+    "headlinePre": "We",
+    "headlinePost": "Your Vision.",
+    "description": "PhileCoders builds reliable web apps, mobile products, and digital platforms that help businesses scale without the overhead.",
+    "ctaPrimary":   { "label": "See Our Work",   "href": "#portfolio" },
+    "ctaSecondary": { "label": "Let's Talk",      "href": "#contact" },
+    "stats": [
+      { "value": "48+", "label": "Projects Shipped" },
+      { "value": "32+", "label": "Clients Served" },
+      { "value": "6+",  "label": "Years in Business" },
+      { "value": "98%", "label": "Client Retention" }
+    ]
+  },
+  "services": {
+    "badge": "What We Do",
+    "heading": "Services That",
+    "headingAccent": "Drive Results",
+    "subheading": "End‑to‑end development, from idea to live product. We stick with you through launch and beyond.",
+    "items": [
+      {
+        "icon": "Globe",
+        "title": "Web Development",
+        "description": "Custom web apps and marketing sites built with React, Next.js, and a focus on performance and SEO.",
+        "tags": ["React", "Next.js", "TypeScript"]
+      },
+      {
+        "icon": "Smartphone",
+        "title": "Mobile Apps",
+        "description": "Cross‑platform iOS & Android apps using React Native or Flutter, with smooth native feel.",
+        "tags": ["React Native", "Flutter", "iOS & Android"]
+      },
+      {
+        "icon": "Palette",
+        "title": "UI/UX Design",
+        "description": "User‑centered design from wireframes to high‑fidelity prototypes, validated with real user feedback.",
+        "tags": ["Figma", "User Research", "Design Systems"]
+      },
+      {
+        "icon": "Database",
+        "title": "Backend & APIs",
+        "description": "Reliable serverless or containerized backends with REST or GraphQL APIs that scale with your traffic.",
+        "tags": ["Node.js", "PostgreSQL", "GraphQL"]
+      },
+      {
+        "icon": "Shield",
+        "title": "Cloud & DevOps",
+        "description": "Automated CI/CD pipelines, AWS and GCP infrastructure, and monitoring so your app runs 24/7.",
+        "tags": ["AWS", "Docker", "CI/CD"]
+      },
+      {
+        "icon": "Zap",
+        "title": "Performance Tuning",
+        "description": "Site audits, Core Web Vitals optimization, and caching strategies that improve load times and SEO.",
+        "tags": ["Core Web Vitals", "Lighthouse", "Caching"]
+      }
+    ]
+  },
+  "about": {
+    "badge": "About PhileCoders",
+    "heading": "Small Team,",
+    "headingAccent": "Big Impact",
+    "description1": "We're a lean team of senior engineers and designers who've worked with both startups and Fortune 500s. We believe in clean code, honest timelines, and products that solve real problems.",
+    "description2": "We act as your technical co‑founders — no fluff, no unnecessary complexity, just software that works.",
+    "highlights": [
+      "Agile, two‑week sprint cycles",
+      "Daily Slack updates (if you want them)",
+      "Fixed‑price or dedicated team options",
+      "Post‑launch warranty & support",
+      "Handover with full documentation",
+      "Security & accessibility best practices"
+    ],
+    "milestones": [
+      { "value": "32+", "label": "Happy Clients" },
+      { "value": "48+", "label": "Projects Delivered" },
+      { "value": "∞",   "label": "Cups of Coffee" }
+    ],
+    "techStack": [
+      "React", "Next.js", "TypeScript", "Node.js",
+      "PostgreSQL", "AWS", "Docker", "Figma",
+      "React Native", "GraphQL"
+    ],
+    "badges": {
+      "topRated": { "label": "5‑Star Rated", "sub": "4.9 ★★★★★" },
+      "fastDelivery": { "label": "On‑time Delivery", "sub": "95% of projects" }
+    },
+    "codeSnippet": {
+      "mission":  "Build trust",
+      "passion":  "Clean code",
+      "delivery": true,
+      "clients":  "Always first"
+    }
+  },
+  "portfolio": {
+    "badge": "Selected Work",
+    "heading": "Recent",
+    "headingAccent": "Projects",
+    "subheading": "A few examples of what we've built recently. Names and specifics anonymized where requested.",
+    "categories": ["All", "Web App", "Mobile", "E-Commerce", "SaaS"],
+    "projects": [
+      {
+        "title": "PeakMetrics Dashboard",
+        "category": "SaaS",
+        "description": "Real‑time analytics dashboard with custom charting and role‑based access, handling 2M+ data points daily.",
+        "tags": ["Next.js", "TypeScript", "D3.js"],
+        "emoji": "📊",
+        "liveUrl": "#",
+        "sourceUrl": "#"
+      },
+      {
+        "title": "CraftCommerce",
+        "category": "E-Commerce",
+        "description": "Headless Shopify storefront with custom inventory management and Stripe Connect payments.",
+        "tags": ["Hydrogen", "React", "Stripe"],
+        "emoji": "🛍️",
+        "liveUrl": "#",
+        "sourceUrl": "#"
+      },
+      {
+        "title": "DocTalk",
+        "category": "Mobile",
+        "description": "Telehealth app connecting patients with licensed therapists via secure video and chat.",
+        "tags": ["React Native", "Firebase", "WebRTC"],
+        "emoji": "🏥",
+        "liveUrl": "#",
+        "sourceUrl": "#"
+      },
+      {
+        "title": "FlowSpace",
+        "category": "SaaS",
+        "description": "Project management tool with Kanban, Gantt, and native Slack integration for remote teams.",
+        "tags": ["Next.js", "PostgreSQL", "Socket.io"],
+        "emoji": "✅",
+        "liveUrl": "#",
+        "sourceUrl": "#"
+      },
+      {
+        "title": "LearnLoop",
+        "category": "Web App",
+        "description": "Corporate learning platform with SCORM compliance, progress badges, and admin dashboard.",
+        "tags": ["React", "AWS Lambda", "GraphQL"],
+        "emoji": "🎓",
+        "liveUrl": "#",
+        "sourceUrl": "#"
+      },
+      {
+        "title": "BiteDash",
+        "category": "Mobile",
+        "description": "Multi‑restaurant food ordering app with live GPS tracking and loyalty points.",
+        "tags": ["Flutter", "Google Maps API", "Node.js"],
+        "emoji": "🍕",
+        "liveUrl": "#",
+        "sourceUrl": "#"
+      }
+    ]
+  },
+  "testimonials": {
+    "badge": "Client Stories",
+    "heading": "What Our",
+    "headingAccent": "Clients Say",
+    "items": [
+      {
+        "name": "Jamie Rivera",
+        "role": "COO, PeakMetrics",
+        "avatar": "JR",
+        "rating": 5,
+        "text": "PhileCoders didn't just build our dashboard — they helped us rethink the user experience. The performance under heavy load is outstanding. We've already renewed for a second phase."
+      },
+      {
+        "name": "Sam Chen",
+        "role": "Founder, CraftCommerce",
+        "avatar": "SC",
+        "rating": 5,
+        "text": "They brought our Shopify migration from idea to live in under 8 weeks. Communication was clear, and the final site feels lightning fast. Our conversion rate went up 20%."
+      },
+      {
+        "name": "Priya K.",
+        "role": "Head of Product, DocTalk",
+        "avatar": "PK",
+        "rating": 5,
+        "text": "Navigating healthcare compliance while delivering a polished UX is tough. PhileCoders handled it gracefully. Our patient onboarding time dropped by half."
+      },
+      {
+        "name": "David Müller",
+        "role": "Program Manager, LearnLoop",
+        "avatar": "DM",
+        "rating": 5,
+        "text": "On‑time, on‑budget, and the codebase is so clean our internal team could pick it up immediately. That handover quality is rare."
+      },
+      {
+        "name": "Aisha Al‑Rashid",
+        "role": "Director of Tech, BiteDash",
+        "avatar": "AR",
+        "rating": 5,
+        "text": "The team felt like an extension of our startup. They were proactive, suggested better ways to handle real‑time tracking, and delivered a beautiful app our users love."
+      }
+    ]
+  },
+  "contact": {
+    "badge": "Let's Talk",
+    "heading": "Ready to",
+    "headingAccent": "Build?",
+    "subheading": "Tell us about your project. We typically respond within one business day, often faster.",
+    "info": [
+      { "icon": "Mail",    "label": "Email",    "value": "hello@PhileCoders.dev" },
+      { "icon": "Phone",   "label": "Phone",    "value": "+1 (415) 202‑8392" },
+      { "icon": "MapPin",  "label": "Location", "value": "San Francisco, CA (Remote‑first)" }
+    ],
+    "cta": {
+      "emoji": "🚀",
+      "heading": "Prefer a quick call?",
+      "text": "Most projects start with a free 30‑min discovery chat. No commitment, just honest advice."
+    },
+    "form": {
+      "namePlaceholder":    "Your full name",
+      "emailPlaceholder":   "you@company.com",
+      "subjectPlaceholder": "What's this about? (e.g., web app, mobile app)",
+      "messagePlaceholder": "Describe your idea, timeline, and budget if you have one...",
+      "submitLabel":        "Send Message",
+      "successTitle":       "Message sent!",
+      "successText":        "We usually reply within a few hours during business days. Talk soon!"
+    }
+  },
+  "footer": {
+    "tagline": "PhileCoders builds fast, maintainable software that moves your business forward. No jargon, no surprises.",
+    "socials": [
+      { "label": "GitHub",   "href": "#" },
+      { "label": "LinkedIn", "href": "#" },
+      { "label": "Twitter",  "href": "#" },
+      { "label": "Email",    "href": "mailto:hello@PhileCoders.dev" }
+    ],
+    "links": {
+      "Company":  ["About", "Services", "Portfolio", "Careers", "Blog"],
+      "Services": ["Web Development", "Mobile Apps", "UI/UX Design", "Backend & APIs", "Cloud & DevOps"],
+      "Legal":    ["Privacy Policy", "Terms of Service", "Cookie Policy"]
+    },
+    "copyright": "© 2026 PhileCoders. All rights reserved.",
+    "builtWith": "Built with 💛 using Next.js & Tailwind CSS"
+  }
+}
