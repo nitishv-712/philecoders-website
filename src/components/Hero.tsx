@@ -77,19 +77,6 @@ export default function Hero() {
   const y       = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
-  const cardRef = useRef<HTMLDivElement>(null);
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const rx = ((e.clientY - rect.top)  / rect.height - 0.5) * 14;
-    const ry = ((e.clientX - rect.left) / rect.width  - 0.5) * -14;
-    cardRef.current.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-  };
-  const handleMouseLeave = () => {
-    if (cardRef.current)
-      cardRef.current.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg)";
-  };
-
   return (
     <section
       id="home"
@@ -97,23 +84,13 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden dot-grid"
       style={{ background: "linear-gradient(160deg, #ede9fe 0%, #e0eeff 40%, #f0f6ff 70%, #faf5ff 100%)" }}
     >
-      <div className="dark:hidden absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/3 w-[600px] h-[600px] rounded-full"
           style={{ background: "radial-gradient(circle, rgba(124,58,237,0.10) 0%, transparent 70%)" }} />
         <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full"
           style={{ background: "radial-gradient(circle, rgba(1,112,244,0.08) 0%, transparent 70%)" }} />
         <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full"
           style={{ background: "radial-gradient(circle, rgba(5,150,105,0.05) 0%, transparent 70%)" }} />
-      </div>
-      <div
-        className="hidden dark:block absolute inset-0 pointer-events-none"
-        style={{ background: "linear-gradient(160deg, #071630 0%, #10274b 40%, #1e1146 70%, #0f172a 100%)" }}
-      />
-      <div className="hidden dark:block absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/3 w-[600px] h-[600px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(124,58,237,0.14) 0%, transparent 70%)" }} />
-        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(1,112,244,0.10) 0%, transparent 70%)" }} />
       </div>
 
       <ParticleField />
@@ -139,11 +116,11 @@ export default function Hero() {
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.1 }}
-              className="text-5xl sm:text-6xl lg:text-[5.5rem] font-black leading-[1.02] tracking-tight mb-6 text-[#0f1f3d] dark:text-white"
+              className="text-5xl sm:text-6xl lg:text-[5.5rem] font-black leading-[1.02] tracking-tight mb-6 text-[#0f1f3d]"
             >
               {hero.headlinePre} <TypewriterText />
               <br />
-              <span className="text-[#7c3aed] dark:text-[#a78bfa]">{hero.headlinePost}</span>
+              <span className="text-[#7c3aed]">{hero.headlinePost}</span>
             </motion.h1>
 
             <motion.p
@@ -178,7 +155,7 @@ export default function Hero() {
                 href={hero.ctaSecondary.href}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
-                className="flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 font-semibold text-base transition-all border-[#7c3aed]/30 text-[#7c3aed] dark:border-[#a78bfa]/30 dark:text-[#c4cdd9]"
+                className="flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 font-semibold text-base transition-all border-[#7c3aed]/30 text-[#7c3aed]"
               >
                 {hero.ctaSecondary.label}
               </motion.a>
@@ -231,27 +208,17 @@ export default function Hero() {
                 />
               ))}
               <div
-                ref={cardRef}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-                className="absolute inset-[72px] rounded-3xl p-[2px] shadow-2xl transition-transform duration-100 cursor-default"
+                className="absolute inset-[72px] rounded-3xl p-[2px] shadow-2xl"
                 style={{ background: "linear-gradient(135deg, #0170f4, #7c3aed, #a78bfa)" }}
               >
-                <div className="w-full h-full rounded-3xl flex flex-col items-center justify-center gap-4 p-6 bg-white dark:bg-[#071630]">
+                <div className="w-full h-full rounded-3xl flex flex-col items-center justify-center gap-4 p-6 bg-white">
                   <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
                     style={{ background: "linear-gradient(135deg, #7c3aed, #0170f4)" }}>
                     <span className="text-xl font-black text-white">{content.site.logo}</span>
                   </div>
                   <div className="text-center">
-                    <div className="font-bold text-[#0f1f3d] dark:text-white text-base">{content.site.name}</div>
+                    <div className="font-bold text-[#0f1f3d] text-base">{content.site.name}</div>
                     <div className="text-xs mt-1 text-[#4a6080]">{content.site.tagline}</div>
-                  </div>
-                  <div className="flex gap-2">
-                    {["⚡", "🚀", "💎"].map((e, i) => (
-                      <motion.span key={i} animate={{ y: [0, -6, 0] }} transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }} className="text-lg">
-                        {e}
-                      </motion.span>
-                    ))}
                   </div>
                 </div>
               </div>
@@ -278,7 +245,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[#7c3aed] dark:text-[#a78bfa]"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[#7c3aed]"
       >
         <span className="text-[10px] font-semibold tracking-[0.2em] uppercase">Scroll</span>
         <motion.div animate={{ y: [0, 7, 0] }} transition={{ duration: 1.4, repeat: Infinity }}>

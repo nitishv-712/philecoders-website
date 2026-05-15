@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import content from "@/content.json";
@@ -10,31 +10,15 @@ import content from "@/content.json";
 const { navbar, site } = content;
 
 export default function Navbar() {
-  const [isDark,    setIsDark]    = useState(false);
-  const [isOpen,    setIsOpen]    = useState(false);
-  const [scrolled,  setScrolled]  = useState(false);
+  const [isOpen,   setIsOpen]   = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    const stored = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const dark = stored === "dark" || (!stored && prefersDark);
-    setIsDark(dark);
-    document.documentElement.classList.toggle("dark", dark);
-  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const toggleTheme = () => {
-    const next = !isDark;
-    setIsDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem("theme", next ? "dark" : "light");
-  };
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -46,7 +30,7 @@ export default function Navbar() {
       transition={{ duration: 0.55, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/85 dark:bg-[#071630]/85 backdrop-blur-2xl border-b border-[#c4dcfc]/40 dark:border-[#a78bfa]/10 shadow-lg shadow-[#7c3aed]/5"
+          ? "bg-white/85 backdrop-blur-2xl border-b border-[#c4dcfc]/40 shadow-lg shadow-[#7c3aed]/5"
           : "bg-transparent"
       }`}
     >
@@ -75,14 +59,14 @@ export default function Navbar() {
                   href={link.href}
                   className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors block ${
                     isActive(link.href)
-                      ? "text-[#7c3aed] dark:text-[#a78bfa]"
-                      : "text-[#4a6080] dark:text-[#8496b2] hover:text-[#10274b] dark:hover:text-white"
+                      ? "text-[#7c3aed]"
+                      : "text-[#4a6080] hover:text-[#10274b]"
                   }`}
                 >
                   {isActive(link.href) && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-[#ede9fe] dark:bg-[#7c3aed]/15"
+                      className="absolute inset-0 rounded-full bg-[#ede9fe]"
                       transition={{ type: "spring", stiffness: 420, damping: 32 }}
                     />
                   )}
@@ -94,26 +78,6 @@ export default function Navbar() {
 
           {/* Right */}
           <div className="flex items-center gap-2.5">
-            <motion.button
-              onClick={toggleTheme}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label="Toggle theme"
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-[#ede9fe] dark:bg-[#7c3aed]/15 text-[#7c3aed] dark:text-[#a78bfa] hover:bg-[#ddd6fe] dark:hover:bg-[#7c3aed]/25 transition-colors"
-            >
-              <AnimatePresence mode="wait">
-                {isDark ? (
-                  <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
-                    <Sun size={15} />
-                  </motion.span>
-                ) : (
-                  <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
-                    <Moon size={15} />
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </motion.button>
-
             <motion.div
               whileHover={{ scale: 1.05, boxShadow: "0 8px 28px rgba(124,58,237,0.30)" }}
               whileTap={{ scale: 0.96 }}
@@ -131,7 +95,7 @@ export default function Navbar() {
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
               whileTap={{ scale: 0.9 }}
-              className="md:hidden w-9 h-9 rounded-full flex items-center justify-center bg-[#ede9fe] dark:bg-[#7c3aed]/15 text-[#7c3aed] dark:text-[#a78bfa]"
+              className="md:hidden w-9 h-9 rounded-full flex items-center justify-center bg-[#ede9fe] text-[#7c3aed]"
             >
               <AnimatePresence mode="wait">
                 {isOpen
@@ -152,7 +116,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.28, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden bg-white/96 dark:bg-[#071630]/96 backdrop-blur-2xl border-b border-[#c4dcfc]/40 dark:border-[#a78bfa]/10"
+            className="md:hidden overflow-hidden bg-white/96 backdrop-blur-2xl border-b border-[#c4dcfc]/40"
           >
             <div className="px-5 py-4 flex flex-col gap-1">
               {navbar.links.map((link, i) => (
@@ -165,7 +129,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="block px-4 py-3 text-sm font-medium text-[#2d4463] dark:text-[#c4cdd9] hover:text-[#7c3aed] dark:hover:text-[#a78bfa] hover:bg-[#ede9fe] dark:hover:bg-[#7c3aed]/10 rounded-xl transition-colors"
+                    className="block px-4 py-3 text-sm font-medium text-[#2d4463] hover:text-[#7c3aed] hover:bg-[#ede9fe] rounded-xl transition-colors"
                   >
                     {link.label}
                   </Link>
