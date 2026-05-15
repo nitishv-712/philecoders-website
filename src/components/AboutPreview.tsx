@@ -11,14 +11,14 @@ const { aboutPreview: a } = content;
 const iconMap: Record<string, React.ElementType> = { Code2, Clock, ShieldCheck, Headphones };
 
 const cardAccents = [
-  { bg: "rgba(1,112,244,0.10)",   color: "#0170f4",  gradient: "linear-gradient(135deg, #0170f4, #4494f6)" },
-  { bg: "rgba(5,150,105,0.10)",   color: "#059669",  gradient: "linear-gradient(135deg, #059669, #34d399)" },
-  { bg: "rgba(124,58,237,0.10)",  color: "#7c3aed",  gradient: "linear-gradient(135deg, #7c3aed, #a78bfa)" },
-  { bg: "rgba(245,158,11,0.10)",  color: "#f59e0b",  gradient: "linear-gradient(135deg, #f59e0b, #fbbf24)" },
+  { bg: "rgba(1,112,244,0.10)", color: "#0170f4", gradient: "linear-gradient(135deg, #0170f4, #4494f6)" },
+  { bg: "rgba(5,150,105,0.10)", color: "#059669", gradient: "linear-gradient(135deg, #059669, #34d399)" },
+  { bg: "rgba(124,58,237,0.10)", color: "#7c3aed", gradient: "linear-gradient(135deg, #7c3aed, #a78bfa)" },
+  { bg: "rgba(245,158,11,0.10)", color: "#f59e0b", gradient: "linear-gradient(135deg, #f59e0b, #fbbf24)" },
 ];
 
 export default function AboutPreview() {
-  const ref    = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (

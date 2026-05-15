@@ -9,9 +9,9 @@ const { hero } = content;
 
 function TypewriterText() {
   const words = hero.typewriterWords;
-  const [index,     setIndex]     = useState(0);
+  const [index, setIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
-  const [deleting,  setDeleting]  = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const word = words[index];
@@ -35,35 +35,96 @@ function TypewriterText() {
 
 function ParticleField() {
   const [mounted, setMounted] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mouseRef = useRef({ x: -1000, y: -1000 });
+  const rafRef = useRef<number>(0);
+  const particleRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   useEffect(() => setMounted(true), []);
 
-  const particles = useMemo(
-    () => Array.from({ length: 40 }, (_, i) => ({
+  const particles = useMemo(() => {
+    const colors = ["#7c3aed", "#a78bfa", "#0170f4", "#34d399", "#c4b5fd"];
+    return Array.from({ length: 28 }, (_, i) => ({
       id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2.5 + 0.8,
-      duration: Math.random() * 12 + 8,
-      delay: Math.random() * 8,
-      color: i % 5 === 0 ? "#7c3aed" : i % 5 === 1 ? "#a78bfa" : i % 5 === 2 ? "#0170f4" : i % 5 === 3 ? "#34d399" : "#8fbbf9",
-    })),
-    []
-  );
+      x: Math.random() * 96 + 2,
+      y: Math.random() * 96 + 2,
+      size: Math.random() * 4 + 3,
+      color: colors[i % colors.length],
+      opacity: Math.random() * 0.2 + 0.15,
+      isRing: i % 4 === 0,
+    }));
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleMove = (e: MouseEvent) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    };
+
+    const animate = () => {
+      const { x: mx, y: my } = mouseRef.current;
+      const container = containerRef.current;
+      if (!container) { rafRef.current = requestAnimationFrame(animate); return; }
+      const w = container.offsetWidth;
+      const h = container.offsetHeight;
+
+      particleRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const p = particles[i];
+        const px = (p.x / 100) * w;
+        const py = (p.y / 100) * h;
+        const dx = px - mx;
+        const dy = py - my;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const radius = 220;
+
+        if (dist < radius && dist > 0) {
+          const force = (1 - dist / radius) * 45;
+          const offsetX = (dx / dist) * force;
+          const offsetY = (dy / dist) * force;
+          el.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${1 + (1 - dist / radius) * 0.4})`;
+          el.style.opacity = String(p.opacity + (1 - dist / radius) * 0.25);
+        } else {
+          el.style.transform = "translate(0px, 0px) scale(1)";
+          el.style.opacity = String(p.opacity);
+        }
+      });
+
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("mousemove", handleMove);
+    rafRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [mounted, particles]);
 
   if (!mounted) return null;
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map((p) => (
+    <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map((p, i) => (
         <div
           key={p.id}
+          ref={(el) => { particleRefs.current[i] = el; }}
           className="absolute rounded-full"
           style={{
-            left: `${p.x}%`, top: `${p.y}%`,
-            width: p.size, height: p.size,
-            background: p.color,
-            animation: `particleFloat ${p.duration}s ${p.delay}s ease-in-out infinite`,
-            opacity: 0.4,
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            width: p.size,
+            height: p.size,
+            ...(p.isRing
+              ? { border: `1.5px solid ${p.color}`, background: "transparent" }
+              : { background: p.color }),
+            opacity: p.opacity,
+            transition: "transform 0.3s ease-out, opacity 0.3s ease-out",
+            willChange: "transform, opacity",
           }}
         />
       ))}
@@ -74,7 +135,7 @@ function ParticleField() {
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y       = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
   return (
