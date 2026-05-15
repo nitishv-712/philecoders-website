@@ -34,9 +34,11 @@ function ServiceCard({ item, index }: { item: typeof services.items[0]; index: n
       >
         <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
           style={{ background: "var(--card-hover)" }} />
+        <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{ background: "linear-gradient(90deg, #0170f4, #7c3aed)" }} />
 
         <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 shadow-md flex-shrink-0"
-          style={{ background: "linear-gradient(135deg, #10274b 0%, #0170f4 100%)" }}>
+          style={{ background: "linear-gradient(135deg, #0170f4 0%, #7c3aed 100%)" }}>
           <Icon size={22} className="text-white" />
         </div>
 
@@ -55,13 +57,13 @@ function ServiceCard({ item, index }: { item: typeof services.items[0]; index: n
         <ul className="space-y-2 mb-6">
           {item.features.map((f) => (
             <li key={f} className="flex items-start gap-2 text-xs" style={{ color: "var(--text-body)" }}>
-              <CheckCircle2 size={13} style={{ color: "#0170f4", flexShrink: 0, marginTop: 1 }} />
+              <CheckCircle2 size={13} style={{ color: "#059669", flexShrink: 0, marginTop: 1 }} />
               {f}
             </li>
           ))}
         </ul>
 
-        <div className="flex items-center gap-1.5 text-sm font-semibold mt-auto" style={{ color: "#0170f4" }}>
+        <div className="flex items-center gap-1.5 text-sm font-semibold mt-auto" style={{ color: "#7c3aed" }}>
           Learn more <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
         </div>
       </Link>
@@ -126,19 +128,19 @@ export default function ServicesPage() {
         <section
           ref={heroRef}
           className="pt-32 pb-20 relative overflow-hidden dot-grid"
-          style={{ background: "linear-gradient(160deg, #dbeafe 0%, #eff6ff 55%, #e0eeff 100%)" }}
+          style={{ background: "linear-gradient(160deg, #ede9fe 0%, #e0eeff 40%, #f0f6ff 70%, #faf5ff 100%)" }}
         >
           <div className="dark:hidden absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(circle at 60% 40%, rgba(1,112,244,0.1) 0%, transparent 60%)" }} />
+            style={{ background: "radial-gradient(circle at 60% 40%, rgba(124,58,237,0.08) 0%, transparent 60%)" }} />
           <div className="hidden dark:block absolute inset-0"
-            style={{ background: "linear-gradient(160deg, #071630 0%, #10274b 55%, #0157c2 100%)" }} />
+            style={{ background: "linear-gradient(160deg, #071630 0%, #10274b 40%, #1e1146 100%)" }} />
 
           <div className="relative max-w-4xl mx-auto px-5 sm:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-5"
-              style={{ background: "var(--badge-bg)", borderColor: "rgba(1,112,244,0.25)", color: "var(--badge-color)" }}
+              style={{ background: "var(--badge-bg)", borderColor: "rgba(124,58,237,0.25)", color: "var(--badge-color)" }}
             >
               {services.badge}
             </motion.div>
@@ -170,14 +172,14 @@ export default function ServicesPage() {
               <Link
                 href="/contact"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-white font-semibold shadow-xl transition-all hover:scale-105"
-                style={{ background: "linear-gradient(90deg, #0157c2, #0170f4)", boxShadow: "0 12px 32px rgba(1,112,244,0.3)" }}
+                style={{ background: "linear-gradient(135deg, #0170f4, #7c3aed)", boxShadow: "0 12px 32px rgba(124,58,237,0.25)" }}
               >
                 Start a Project <ArrowRight size={17} />
               </Link>
               <a
                 href="#services-grid"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold border-2 transition-all hover:scale-105"
-                style={{ borderColor: "rgba(1,112,244,0.3)", color: "var(--text-body)" }}
+                style={{ borderColor: "rgba(124,58,237,0.25)", color: "var(--text-body)" }}
               >
                 Browse Services
               </a>
@@ -193,7 +195,7 @@ export default function ServicesPage() {
                 initial={{ opacity: 0, y: 18 }}
                 animate={processInView ? { opacity: 1, y: 0 } : {}}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
-                style={{ background: "var(--badge-bg)", borderColor: "rgba(1,112,244,0.2)", color: "var(--badge-color)" }}
+                style={{ background: "var(--badge-bg)", borderColor: "rgba(124,58,237,0.2)", color: "var(--badge-color)" }}
               >
                 How We Work
               </motion.div>
@@ -220,7 +222,7 @@ export default function ServicesPage() {
                 >
                   {i < services.process.length - 1 && (
                     <div className="hidden lg:block absolute top-10 -right-3 w-6 h-px z-10"
-                      style={{ background: "linear-gradient(90deg, #0170f4, transparent)" }} />
+                      style={{ background: "linear-gradient(90deg, #7c3aed, transparent)" }} />
                   )}
                   <div className="text-3xl font-black mb-4 gradient-text">{step.step}</div>
                   <h3 className="font-bold mb-2" style={{ color: "var(--text-primary)" }}>{step.title}</h3>
@@ -234,12 +236,12 @@ export default function ServicesPage() {
         {/* ── Services Grid ── */}
         <section id="services-grid" className="py-24 relative overflow-hidden" style={{ background: "var(--bg-section)" }}>
           <div className="absolute top-0 left-0 right-0 h-px"
-            style={{ background: "linear-gradient(90deg, transparent, rgba(1,112,244,0.25), transparent)" }} />
+            style={{ background: "linear-gradient(90deg, transparent, rgba(124,58,237,0.25), transparent)" }} />
 
           <div className="max-w-7xl mx-auto px-5 sm:px-8">
             <div className="text-center mb-14">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
-                style={{ background: "var(--badge-bg)", borderColor: "rgba(1,112,244,0.2)", color: "var(--badge-color)" }}>
+                style={{ background: "var(--badge-bg)", borderColor: "rgba(124,58,237,0.2)", color: "var(--badge-color)" }}>
                 All Services
               </div>
               <h2 className="text-4xl sm:text-5xl font-black" style={{ color: "var(--text-primary)" }}>
@@ -263,7 +265,7 @@ export default function ServicesPage() {
                 initial={{ opacity: 0, y: 18 }}
                 animate={faqInView ? { opacity: 1, y: 0 } : {}}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
-                style={{ background: "var(--badge-bg)", borderColor: "rgba(1,112,244,0.2)", color: "var(--badge-color)" }}
+                style={{ background: "var(--badge-bg)", borderColor: "rgba(124,58,237,0.2)", color: "var(--badge-color)" }}
               >
                 FAQ
               </motion.div>
@@ -289,21 +291,21 @@ export default function ServicesPage() {
         {/* ── CTA ── */}
         <section className="py-24 relative overflow-hidden" style={{ background: "var(--bg-section)" }}>
           <div className="absolute top-0 left-0 right-0 h-px"
-            style={{ background: "linear-gradient(90deg, transparent, rgba(1,112,244,0.25), transparent)" }} />
+            style={{ background: "linear-gradient(90deg, transparent, rgba(124,58,237,0.25), transparent)" }} />
           <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center">
             <div
               className="relative rounded-3xl p-12 sm:p-16 overflow-hidden"
               style={{
-                background: "linear-gradient(135deg, #0f1f3d 0%, #0157c2 60%, #0170f4 100%)",
-                boxShadow: "0 32px 80px rgba(1,112,244,0.3)",
+                background: "linear-gradient(135deg, #0f1f3d 0%, #10274b 30%, #7c3aed 100%)",
+                boxShadow: "0 32px 80px rgba(124,58,237,0.25)",
               }}
             >
               <div className="absolute inset-0 pointer-events-none"
-                style={{ background: "radial-gradient(ellipse at 60% 40%, rgba(143,187,249,0.12) 0%, transparent 60%)" }} />
+                style={{ background: "radial-gradient(ellipse at 60% 40%, rgba(167,139,250,0.15) 0%, transparent 60%)" }} />
               <h2 className="text-3xl sm:text-5xl font-black text-white mb-5 relative">
                 Not sure where to start?
               </h2>
-              <p className="text-lg max-w-xl mx-auto mb-10 relative" style={{ color: "#c4dcfc" }}>
+              <p className="text-lg max-w-xl mx-auto mb-10 relative" style={{ color: "#ddd6fe" }}>
                 Book a free 30-minute discovery call. We&apos;ll listen to your goals and recommend the right approach — no commitment required.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center relative">

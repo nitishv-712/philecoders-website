@@ -9,14 +9,22 @@ const { whyChooseUs: w } = content;
 
 const iconMap: Record<string, React.ElementType> = { Rocket, Users, DollarSign, FileText, Globe, Star };
 
+const cardAccents = [
+  { gradient: "linear-gradient(135deg, #0170f4, #4494f6)", glow: "rgba(1,112,244,0.15)" },
+  { gradient: "linear-gradient(135deg, #7c3aed, #a78bfa)", glow: "rgba(124,58,237,0.15)" },
+  { gradient: "linear-gradient(135deg, #059669, #34d399)", glow: "rgba(5,150,105,0.15)" },
+  { gradient: "linear-gradient(135deg, #f59e0b, #fbbf24)", glow: "rgba(245,158,11,0.15)" },
+  { gradient: "linear-gradient(135deg, #f43f5e, #fb7185)", glow: "rgba(244,63,94,0.15)" },
+  { gradient: "linear-gradient(135deg, #0170f4, #7c3aed)", glow: "rgba(1,112,244,0.15)" },
+];
+
 export default function WhyChooseUs() {
   const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <section className="py-24 sm:py-32 relative overflow-hidden" style={{ background: "var(--bg-section)" }}>
-      <div className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(1,112,244,0.25), transparent)" }} />
+      <div className="section-divider absolute top-0 left-0 right-0" />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div ref={ref} className="text-center mb-14">
@@ -24,7 +32,7 @@ export default function WhyChooseUs() {
             initial={{ opacity: 0, y: 18 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
-            style={{ background: "var(--badge-bg)", borderColor: "rgba(1,112,244,0.2)", color: "var(--badge-color)" }}
+            style={{ background: "var(--badge-bg)", borderColor: "rgba(124,58,237,0.2)", color: "var(--badge-color)" }}
           >
             {w.badge}
           </motion.div>
@@ -42,6 +50,7 @@ export default function WhyChooseUs() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {w.reasons.map((r, i) => {
             const Icon = iconMap[r.icon] ?? Star;
+            const accent = cardAccents[i % cardAccents.length];
             return (
               <motion.div
                 key={r.title}
@@ -52,11 +61,13 @@ export default function WhyChooseUs() {
                 style={{
                   background: "var(--bg-card)",
                   borderColor: "var(--border)",
-                  boxShadow: "0 2px 12px rgba(1,112,244,0.04)",
+                  boxShadow: "0 2px 12px rgba(0,0,0,0.03)",
                 }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 48px ${accent.glow}`; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.03)"; }}
               >
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-md"
-                  style={{ background: "linear-gradient(135deg, #10274b, #0170f4)" }}>
+                  style={{ background: accent.gradient }}>
                   <Icon size={20} className="text-white" />
                 </div>
                 <h3 className="font-bold mb-2" style={{ color: "var(--text-primary)" }}>{r.title}</h3>

@@ -85,8 +85,8 @@ export default function Cursor() {
           translateY: "-50%",
           width: 40,
           height: 40,
-          border: "1px solid rgba(1, 112, 244, 0.4)",
-          backgroundColor: isHovering ? "rgba(1, 112, 244, 0.1)" : "transparent",
+          border: "1px solid rgba(124, 58, 237, 0.4)",
+          backgroundColor: isHovering ? "rgba(124, 58, 237, 0.1)" : "transparent",
           opacity: isHidden ? 0 : 1,
         }}
         animate={{

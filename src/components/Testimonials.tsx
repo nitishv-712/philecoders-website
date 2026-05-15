@@ -7,6 +7,14 @@ import content from "@/content.json";
 
 const { testimonials: t } = content;
 
+const avatarGradients = [
+  "linear-gradient(135deg, #0170f4, #7c3aed)",
+  "linear-gradient(135deg, #7c3aed, #a78bfa)",
+  "linear-gradient(135deg, #059669, #34d399)",
+  "linear-gradient(135deg, #f59e0b, #fbbf24)",
+  "linear-gradient(135deg, #f43f5e, #fb7185)",
+];
+
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
   const ref    = useRef<HTMLDivElement>(null);
@@ -21,10 +29,9 @@ export default function Testimonials() {
       style={{ background: "var(--bg)" }}>
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full blur-3xl"
-          style={{ background: "radial-gradient(ellipse, rgba(1,112,244,0.06) 0%, transparent 70%)" }} />
+          style={{ background: "radial-gradient(ellipse, rgba(124,58,237,0.05) 0%, transparent 70%)" }} />
       </div>
-      <div className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(1,112,244,0.25), transparent)" }} />
+      <div className="section-divider absolute top-0 left-0 right-0" />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div ref={ref} className="text-center mb-14">
@@ -32,7 +39,7 @@ export default function Testimonials() {
             initial={{ opacity: 0, y: 18 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
-            style={{ background: "var(--badge-bg)", borderColor: "rgba(1,112,244,0.2)", color: "var(--badge-color)" }}
+            style={{ background: "var(--badge-bg)", borderColor: "rgba(124,58,237,0.2)", color: "var(--badge-color)" }}
           >
             <Star size={13} className="fill-current" /> {t.badge}
           </motion.div>
@@ -64,17 +71,17 @@ export default function Testimonials() {
               style={{ background: "var(--bg-card)", borderColor: "var(--border)" }}
             >
               <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(1,112,244,0.06) 0%, transparent 70%)" }} />
+                style={{ background: "radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%)" }} />
 
               <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-6 shadow-lg"
-                style={{ background: "linear-gradient(135deg, #10274b, #0170f4)" }}>
+                style={{ background: "linear-gradient(135deg, #7c3aed, #a78bfa)" }}>
                 <Quote size={18} className="text-white" />
               </div>
 
               <div className="flex gap-1 mb-6">
                 {Array.from({ length: item.rating }).map((_, i) => (
                   <motion.div key={i} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.07 }}>
-                    <Star size={17} className="fill-current" style={{ color: "#0170f4" }} />
+                    <Star size={17} className="fill-current" style={{ color: "#f59e0b" }} />
                   </motion.div>
                 ))}
               </div>
@@ -85,7 +92,7 @@ export default function Testimonials() {
 
               <div className="flex items-center gap-4">
                 <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg"
-                  style={{ background: "linear-gradient(135deg, #10274b, #0170f4)" }}>
+                  style={{ background: avatarGradients[current % avatarGradients.length] }}>
                   {item.avatar}
                 </div>
                 <div>
@@ -104,7 +111,7 @@ export default function Testimonials() {
                   onClick={() => setCurrent(i)}
                   whileHover={{ scale: 1.2 }}
                   className="h-2 rounded-full transition-all duration-300"
-                  style={{ width: i === current ? 32 : 8, background: i === current ? "#0170f4" : "rgba(1,112,244,0.2)" }}
+                  style={{ width: i === current ? 32 : 8, background: i === current ? "#7c3aed" : "rgba(124,58,237,0.2)" }}
                 />
               ))}
             </div>
@@ -116,12 +123,11 @@ export default function Testimonials() {
               </motion.button>
               <motion.button onClick={next} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
                 className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-lg"
-                style={{ background: "linear-gradient(135deg, #0157c2, #0170f4)" }}>
+                style={{ background: "linear-gradient(135deg, #0170f4, #7c3aed)" }}>
                 <ChevronRight size={17} />
               </motion.button>
             </div>
           </div>
-        </motion.div>
 
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-12">
           {t.items.map((ti, i) => (
@@ -134,11 +140,11 @@ export default function Testimonials() {
               whileHover={{ scale: 1.03 }}
               className="p-3 rounded-xl border text-left transition-all"
               style={i === current
-                ? { borderColor: "#0170f4", background: "rgba(1,112,244,0.08)" }
+                ? { borderColor: "#7c3aed", background: "rgba(124,58,237,0.08)" }
                 : { borderColor: "var(--border)", background: "var(--bg-card)" }}
             >
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold mb-2"
-                style={{ background: "linear-gradient(135deg, #10274b, #0170f4)" }}>
+                style={{ background: avatarGradients[i % avatarGradients.length] }}>
                 {ti.avatar}
               </div>
               <div className="text-xs font-semibold truncate" style={{ color: "var(--text-primary)" }}>{ti.name}</div>
@@ -146,6 +152,7 @@ export default function Testimonials() {
             </motion.button>
           ))}
         </div>
+        </motion.div>
       </div>
     </section>
   );

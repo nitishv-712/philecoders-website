@@ -48,14 +48,14 @@ export default async function ServiceDetailPage({ params }: Props) {
         {/* Hero */}
         <section className="pt-32 pb-16 px-5 sm:px-8 max-w-5xl mx-auto">
           <Link href="/services"
-            className="inline-flex items-center gap-2 text-sm mb-8 transition-colors hover:text-[#0170f4]"
+            className="inline-flex items-center gap-2 text-sm mb-8 transition-colors hover:text-[#7c3aed]"
             style={{ color: "var(--text-muted)" }}>
             <ArrowLeft size={15} /> All Services
           </Link>
 
           <div className="flex flex-col sm:flex-row items-start gap-6 mb-8">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl flex-shrink-0"
-              style={{ background: "linear-gradient(135deg, #10274b 0%, #0170f4 100%)" }}>
+              style={{ background: "linear-gradient(135deg, #0170f4 0%, #7c3aed 100%)" }}>
               <Icon size={28} className="text-white" />
             </div>
             <div>
@@ -87,7 +87,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {service.features.map((f) => (
                     <div key={f} className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text-body)" }}>
-                      <CheckCircle2 size={15} style={{ color: "#0170f4", flexShrink: 0, marginTop: 2 }} />
+                      <CheckCircle2 size={15} style={{ color: "#059669", flexShrink: 0, marginTop: 2 }} />
                       {f}
                     </div>
                   ))}
@@ -112,10 +112,10 @@ export default async function ServiceDetailPage({ params }: Props) {
 
               {/* CTA card */}
               <div className="rounded-2xl p-6 text-white sticky top-24"
-                style={{ background: "linear-gradient(135deg, #0157c2 0%, #0170f4 100%)", boxShadow: "0 20px 48px rgba(1,112,244,0.3)" }}>
+                style={{ background: "linear-gradient(135deg, #7c3aed 0%, #0170f4 100%)", boxShadow: "0 20px 48px rgba(124,58,237,0.25)" }}>
                 <div className="text-3xl mb-3">🚀</div>
                 <h3 className="font-bold text-lg mb-2">Ready to get started?</h3>
-                <p className="text-sm leading-relaxed mb-5" style={{ color: "#c4dcfc" }}>
+                <p className="text-sm leading-relaxed mb-5" style={{ color: "#ddd6fe" }}>
                   Tell us about your project and we&apos;ll get back to you within one business day.
                 </p>
                 <Link

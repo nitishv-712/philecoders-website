@@ -23,15 +23,15 @@ export default function RelatedServices({ items }: { items: RelatedItem[] }) {
               href={`/services/${r.slug}`}
               className="flex items-center gap-3 p-3 rounded-xl transition-colors group"
               style={{ background: "var(--bg-section)" }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "rgba(1,112,244,0.08)")}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "rgba(124,58,237,0.08)")}
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "var(--bg-section)")}
             >
               <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: "linear-gradient(135deg, #10274b, #0170f4)" }}>
+                style={{ background: "linear-gradient(135deg, #0170f4, #7c3aed)" }}>
                 <Icon size={14} className="text-white" />
               </div>
               <span className="text-sm font-medium transition-colors" style={{ color: "var(--text-primary)" }}>{r.title}</span>
-              <ArrowRight size={13} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: "#0170f4" }} />
+              <ArrowRight size={13} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: "#7c3aed" }} />
             </Link>
           );
         })}

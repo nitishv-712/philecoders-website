@@ -7,9 +7,25 @@ import content from "@/content.json";
 
 const { portfolio: p } = content;
 
+const categoryGradients: Record<string, string> = {
+  "SaaS":       "linear-gradient(135deg, #0170f4 0%, #7c3aed 100%)",
+  "E-Commerce": "linear-gradient(135deg, #059669 0%, #34d399 100%)",
+  "Mobile":     "linear-gradient(135deg, #f43f5e 0%, #f59e0b 100%)",
+  "Web App":    "linear-gradient(135deg, #7c3aed 0%, #0170f4 100%)",
+};
+
+const categoryTagStyles: Record<string, { bg: string; color: string }> = {
+  "SaaS":       { bg: "rgba(1,112,244,0.10)",  color: "#0170f4" },
+  "E-Commerce": { bg: "rgba(5,150,105,0.10)",  color: "#059669" },
+  "Mobile":     { bg: "rgba(244,63,94,0.10)",  color: "#f43f5e" },
+  "Web App":    { bg: "rgba(124,58,237,0.10)", color: "#7c3aed" },
+};
+
 function ProjectCard({ project, index }: { project: typeof p.projects[0]; index: number }) {
   const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
+  const gradient = categoryGradients[project.category] ?? categoryGradients["SaaS"];
+  const tagStyle = categoryTagStyles[project.category] ?? categoryTagStyles["SaaS"];
 
   return (
     <motion.div
@@ -23,13 +39,13 @@ function ProjectCard({ project, index }: { project: typeof p.projects[0]; index:
       style={{ background: "var(--bg-card)", borderColor: "var(--border)" }}
     >
       <div className="h-36 relative overflow-hidden flex items-center justify-center"
-        style={{ background: "linear-gradient(135deg, #10274b 0%, #0157c2 60%, #0170f4 100%)" }}>
+        style={{ background: gradient }}>
         <span className="text-5xl group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
           {project.emoji}
         </span>
         <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity" />
         <span className="absolute top-3 right-3 px-2.5 py-1 text-xs font-semibold rounded-full"
-          style={{ background: "rgba(1,112,244,0.3)", color: "#c4dcfc", backdropFilter: "blur(8px)" }}>
+          style={{ background: "rgba(255,255,255,0.18)", color: "#fff", backdropFilter: "blur(8px)" }}>
           {project.category}
         </span>
       </div>
@@ -40,14 +56,14 @@ function ProjectCard({ project, index }: { project: typeof p.projects[0]; index:
         <div className="flex flex-wrap gap-1.5 mb-4">
           {project.tags.map((tag) => (
             <span key={tag} className="px-2 py-0.5 text-xs rounded-full"
-              style={{ background: "var(--tag-bg)", color: "var(--tag-color)" }}>
+              style={{ background: tagStyle.bg, color: tagStyle.color }}>
               {tag}
             </span>
           ))}
         </div>
         <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
           <motion.a href={project.liveUrl} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: "#0170f4" }}
+            className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: tagStyle.color }}
             target="_blank" rel="noopener noreferrer">
             <ExternalLink size={12} /> Live Demo
           </motion.a>
@@ -72,8 +88,7 @@ export default function Portfolio() {
   return (
     <section id="portfolio" className="py-24 sm:py-32 relative overflow-hidden"
       style={{ background: "var(--bg-alt)" }}>
-      <div className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(1,112,244,0.25), transparent)" }} />
+      <div className="section-divider absolute top-0 left-0 right-0" />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div ref={ref} className="text-center mb-12">
@@ -81,7 +96,7 @@ export default function Portfolio() {
             initial={{ opacity: 0, y: 18 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
-            style={{ background: "var(--badge-bg)", borderColor: "rgba(1,112,244,0.2)", color: "var(--badge-color)" }}
+            style={{ background: "var(--badge-bg)", borderColor: "rgba(124,58,237,0.2)", color: "var(--badge-color)" }}
           >
             <Layers size={13} /> {p.badge}
           </motion.div>
@@ -126,7 +141,7 @@ export default function Portfolio() {
                 <motion.span
                   layoutId="filter-pill"
                   className="absolute inset-0 rounded-full"
-                  style={{ background: "linear-gradient(90deg, #0157c2, #0170f4)" }}
+                  style={{ background: "linear-gradient(135deg, #0170f4, #7c3aed)" }}
                   transition={{ type: "spring", stiffness: 420, damping: 32 }}
                 />
               )}

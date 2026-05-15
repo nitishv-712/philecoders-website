@@ -11,7 +11,7 @@ function StarRow({ rating }: { rating: number }) {
       {[1, 2, 3, 4, 5].map((s) => (
         <Star key={s} size={13}
           className={s <= rating ? "fill-current" : ""}
-          style={{ color: s <= rating ? "#0170f4" : "#2d4463" }} />
+          style={{ color: s <= rating ? "#f59e0b" : "#2d4463" }} />
       ))}
     </div>
   );
@@ -35,7 +35,7 @@ export default function ReviewList({ serviceSlug }: { serviceSlug: string }) {
     return (
       <div className="flex items-center gap-2 py-8" style={{ color: "#4a6080" }}>
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-4 h-4 border-2 rounded-full" style={{ borderColor: "rgba(143,187,249,0.2)", borderTopColor: "#0170f4" }} />
+          className="w-4 h-4 border-2 rounded-full" style={{ borderColor: "rgba(167,139,250,0.2)", borderTopColor: "#7c3aed" }} />
         <span className="text-sm">Loading reviews…</span>
       </div>
     );
@@ -55,7 +55,7 @@ export default function ReviewList({ serviceSlug }: { serviceSlug: string }) {
     <div>
       {/* Summary bar */}
       <div className="flex items-center gap-4 mb-6 p-4 rounded-xl"
-        style={{ background: "rgba(1,112,244,0.08)", border: "1px solid rgba(143,187,249,0.1)" }}>
+        style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(167,139,250,0.1)" }}>
         <div className="text-4xl font-black gradient-text">{avg}</div>
         <div>
           <StarRow rating={Math.round(Number(avg))} />
@@ -72,12 +72,12 @@ export default function ReviewList({ serviceSlug }: { serviceSlug: string }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.07 }}
             className="p-5 rounded-2xl border"
-            style={{ background: "rgba(255,255,255,0.02)", borderColor: "rgba(143,187,249,0.1)" }}
+            style={{ background: "rgba(255,255,255,0.02)", borderColor: "rgba(167,139,250,0.1)" }}
           >
             <div className="flex items-start justify-between gap-3 mb-3">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                  style={{ background: "linear-gradient(135deg, #10274b, #0170f4)" }}>
+                  style={{ background: "linear-gradient(135deg, #0170f4, #7c3aed)" }}>
                   {r.name.slice(0, 2).toUpperCase()}
                 </div>
                 <div>

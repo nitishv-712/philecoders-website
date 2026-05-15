@@ -46,7 +46,7 @@ export default function Navbar() {
       transition={{ duration: 0.55, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/90 dark:bg-[#071630]/90 backdrop-blur-2xl border-b border-[#c4dcfc]/40 dark:border-[#1f3557]/60 shadow-lg shadow-[#0170f4]/5"
+          ? "bg-white/85 dark:bg-[#071630]/85 backdrop-blur-2xl border-b border-[#c4dcfc]/40 dark:border-[#a78bfa]/10 shadow-lg shadow-[#7c3aed]/5"
           : "bg-transparent"
       }`}
     >
@@ -57,7 +57,7 @@ export default function Navbar() {
           <motion.div whileHover={{ scale: 1.02 }}>
             <Link href="/" className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-md"
-                style={{ background: "linear-gradient(135deg, #10274b 0%, #0170f4 100%)" }}>
+                style={{ background: "linear-gradient(135deg, #7c3aed 0%, #0170f4 100%)" }}>
                 <span className="text-xs font-black text-white tracking-tight">{site.logo}</span>
               </div>
               <span className="font-bold text-[17px] tracking-tight">
@@ -75,14 +75,14 @@ export default function Navbar() {
                   href={link.href}
                   className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors block ${
                     isActive(link.href)
-                      ? "text-[#0170f4] dark:text-[#8fbbf9]"
+                      ? "text-[#7c3aed] dark:text-[#a78bfa]"
                       : "text-[#4a6080] dark:text-[#8496b2] hover:text-[#10274b] dark:hover:text-white"
                   }`}
                 >
                   {isActive(link.href) && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-[#e8f2fe] dark:bg-[#0157c2]/20"
+                      className="absolute inset-0 rounded-full bg-[#ede9fe] dark:bg-[#7c3aed]/15"
                       transition={{ type: "spring", stiffness: 420, damping: 32 }}
                     />
                   )}
@@ -99,7 +99,7 @@ export default function Navbar() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               aria-label="Toggle theme"
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-[#e8f2fe] dark:bg-[#1f3557] text-[#0157c2] dark:text-[#8fbbf9] hover:bg-[#c4dcfc] dark:hover:bg-[#2d4463] transition-colors"
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-[#ede9fe] dark:bg-[#7c3aed]/15 text-[#7c3aed] dark:text-[#a78bfa] hover:bg-[#ddd6fe] dark:hover:bg-[#7c3aed]/25 transition-colors"
             >
               <AnimatePresence mode="wait">
                 {isDark ? (
@@ -115,14 +115,14 @@ export default function Navbar() {
             </motion.button>
 
             <motion.div
-              whileHover={{ scale: 1.05, boxShadow: "0 8px 28px rgba(1,112,244,0.35)" }}
+              whileHover={{ scale: 1.05, boxShadow: "0 8px 28px rgba(124,58,237,0.30)" }}
               whileTap={{ scale: 0.96 }}
               className="hidden md:block"
             >
               <Link
                 href="/contact"
-                className="flex items-center px-5 py-2 text-sm font-semibold text-white rounded-full shadow-lg shadow-[#0170f4]/25 transition-all"
-                style={{ background: "linear-gradient(90deg, #10274b 0%, #0170f4 100%)" }}
+                className="flex items-center px-5 py-2 text-sm font-semibold text-white rounded-full shadow-lg shadow-[#7c3aed]/20 transition-all"
+                style={{ background: "linear-gradient(135deg, #0170f4 0%, #7c3aed 100%)" }}
               >
                 {navbar.cta}
               </Link>
@@ -131,7 +131,7 @@ export default function Navbar() {
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
               whileTap={{ scale: 0.9 }}
-              className="md:hidden w-9 h-9 rounded-full flex items-center justify-center bg-[#e8f2fe] dark:bg-[#1f3557] text-[#0157c2] dark:text-[#8fbbf9]"
+              className="md:hidden w-9 h-9 rounded-full flex items-center justify-center bg-[#ede9fe] dark:bg-[#7c3aed]/15 text-[#7c3aed] dark:text-[#a78bfa]"
             >
               <AnimatePresence mode="wait">
                 {isOpen
@@ -152,7 +152,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.28, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden bg-white/96 dark:bg-[#071630]/96 backdrop-blur-2xl border-b border-[#c4dcfc]/40 dark:border-[#1f3557]/60"
+            className="md:hidden overflow-hidden bg-white/96 dark:bg-[#071630]/96 backdrop-blur-2xl border-b border-[#c4dcfc]/40 dark:border-[#a78bfa]/10"
           >
             <div className="px-5 py-4 flex flex-col gap-1">
               {navbar.links.map((link, i) => (
@@ -165,7 +165,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="block px-4 py-3 text-sm font-medium text-[#2d4463] dark:text-[#c4cdd9] hover:text-[#0170f4] dark:hover:text-[#8fbbf9] hover:bg-[#e8f2fe] dark:hover:bg-[#0157c2]/15 rounded-xl transition-colors"
+                    className="block px-4 py-3 text-sm font-medium text-[#2d4463] dark:text-[#c4cdd9] hover:text-[#7c3aed] dark:hover:text-[#a78bfa] hover:bg-[#ede9fe] dark:hover:bg-[#7c3aed]/10 rounded-xl transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -180,7 +180,7 @@ export default function Navbar() {
                   href="/contact"
                   onClick={() => setIsOpen(false)}
                   className="mt-2 block px-4 py-3 text-sm font-semibold text-white text-center rounded-xl"
-                  style={{ background: "linear-gradient(90deg, #10274b 0%, #0170f4 100%)" }}
+                  style={{ background: "linear-gradient(135deg, #0170f4 0%, #7c3aed 100%)" }}
                 >
                   {navbar.cta}
                 </Link>

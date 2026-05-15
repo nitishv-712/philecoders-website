@@ -29,8 +29,8 @@ export default function NewsletterSignup() {
     <div className="py-12 border-t" style={{ borderColor: "var(--border-soft)" }}>
       <div className="max-w-xl mx-auto text-center px-4">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-4"
-          style={{ background: "rgba(1,112,244,0.1)" }}>
-          <Mail size={18} style={{ color: "#0170f4" }} />
+          style={{ background: "rgba(124,58,237,0.10)" }}>
+          <Mail size={18} style={{ color: "#7c3aed" }} />
         </div>
         <h3 className="text-base font-bold mb-1" style={{ color: "var(--text-primary)" }}>Stay in the loop</h3>
         <p className="text-xs mb-5" style={{ color: "var(--text-muted)" }}>
@@ -40,7 +40,7 @@ export default function NewsletterSignup() {
         <AnimatePresence mode="wait">
           {submitted ? (
             <motion.div key="ok" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center justify-center gap-2" style={{ color: "#0170f4" }}>
+              className="flex items-center justify-center gap-2" style={{ color: "#059669" }}>
               <CheckCircle2 size={18} />
               <span className="text-sm font-semibold">You&apos;re subscribed!</span>
             </motion.div>
@@ -54,7 +54,7 @@ export default function NewsletterSignup() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none transition-all"
                 style={{ background: "var(--input-bg)", border: "1px solid var(--input-border)", color: "var(--text-primary)" }}
-                onFocus={(e) => (e.target.style.borderColor = "#0170f4")}
+                onFocus={(e) => (e.target.style.borderColor = "#7c3aed")}
                 onBlur={(e)  => (e.target.style.borderColor = "var(--input-border)")}
               />
               <motion.button
@@ -63,7 +63,7 @@ export default function NewsletterSignup() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 className="px-5 py-2.5 rounded-xl text-white text-sm font-semibold disabled:opacity-60 flex-shrink-0"
-                style={{ background: "linear-gradient(90deg, #0157c2, #0170f4)" }}
+                style={{ background: "linear-gradient(135deg, #0170f4, #7c3aed)" }}
               >
                 {loading ? "…" : "Subscribe"}
               </motion.button>

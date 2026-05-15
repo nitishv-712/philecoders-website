@@ -30,7 +30,7 @@ export default function ReviewForm({ serviceSlug }: { serviceSlug: string }) {
 
   return (
     <div className="rounded-2xl border p-6"
-      style={{ background: "rgba(255,255,255,0.03)", borderColor: "rgba(143,187,249,0.12)" }}>
+      style={{ background: "rgba(255,255,255,0.03)", borderColor: "rgba(167,139,250,0.12)" }}>
       <h3 className="text-base font-bold text-white mb-1">Leave a Review</h3>
       <p className="text-xs mb-5" style={{ color: "#4a6080" }}>
         Your review will appear after approval.
@@ -45,8 +45,8 @@ export default function ReviewForm({ serviceSlug }: { serviceSlug: string }) {
             className="flex flex-col items-center py-8 text-center gap-3"
           >
             <div className="w-14 h-14 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(1,112,244,0.15)" }}>
-              <CheckCircle2 size={28} style={{ color: "#0170f4" }} />
+              style={{ background: "rgba(5,150,105,0.15)" }}>
+              <CheckCircle2 size={28} style={{ color: "#059669" }} />
             </div>
             <p className="font-semibold text-white">Thanks for your review!</p>
             <p className="text-xs" style={{ color: "#4a6080" }}>It will show up once approved.</p>
@@ -55,7 +55,7 @@ export default function ReviewForm({ serviceSlug }: { serviceSlug: string }) {
           <motion.form key="form" onSubmit={handleSubmit} className="space-y-4">
             {/* Star picker */}
             <div>
-              <label className="block text-xs font-semibold mb-2" style={{ color: "#8fbbf9" }}>Rating</label>
+              <label className="block text-xs font-semibold mb-2" style={{ color: "#a78bfa" }}>Rating</label>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <button
@@ -69,7 +69,7 @@ export default function ReviewForm({ serviceSlug }: { serviceSlug: string }) {
                     <Star
                       size={24}
                       className={`transition-colors ${(hover || rating) >= s ? "fill-current" : ""}`}
-                      style={{ color: (hover || rating) >= s ? "#0170f4" : "#2d4463" }}
+                      style={{ color: (hover || rating) >= s ? "#f59e0b" : "#2d4463" }}
                     />
                   </button>
                 ))}
@@ -82,23 +82,23 @@ export default function ReviewForm({ serviceSlug }: { serviceSlug: string }) {
                 { id: "role", label: "Role / Company", placeholder: "CEO, Acme Inc." },
               ].map((f) => (
                 <div key={f.id}>
-                  <label className="block text-xs font-semibold mb-1.5" style={{ color: "#8fbbf9" }}>{f.label}</label>
+                  <label className="block text-xs font-semibold mb-1.5" style={{ color: "#a78bfa" }}>{f.label}</label>
                   <input
                     required
                     placeholder={f.placeholder}
                     value={form[f.id as keyof typeof form]}
                     onChange={(e) => setForm({ ...form, [f.id]: e.target.value })}
                     className="w-full px-3 py-2.5 rounded-xl text-sm text-white placeholder-[#4a6080] outline-none transition-all"
-                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(143,187,249,0.15)" }}
-                    onFocus={(e) => (e.target.style.borderColor = "#0170f4")}
-                    onBlur={(e)  => (e.target.style.borderColor = "rgba(143,187,249,0.15)")}
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(167,139,250,0.15)" }}
+                    onFocus={(e) => (e.target.style.borderColor = "#7c3aed")}
+                    onBlur={(e)  => (e.target.style.borderColor = "rgba(167,139,250,0.15)")}
                   />
                 </div>
               ))}
             </div>
 
             <div>
-              <label className="block text-xs font-semibold mb-1.5" style={{ color: "#8fbbf9" }}>Your Review</label>
+              <label className="block text-xs font-semibold mb-1.5" style={{ color: "#a78bfa" }}>Your Review</label>
               <textarea
                 required
                 rows={4}
@@ -120,7 +120,7 @@ export default function ReviewForm({ serviceSlug }: { serviceSlug: string }) {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white text-sm font-semibold disabled:opacity-60 transition-all"
-              style={{ background: "linear-gradient(90deg, #0157c2, #0170f4)" }}
+              style={{ background: "linear-gradient(135deg, #0170f4, #7c3aed)" }}
             >
               {loading ? (
                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}

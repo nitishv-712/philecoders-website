@@ -19,16 +19,16 @@ export default function LegalPage({ badge, title, lastUpdated, intro, sections }
     <main className="min-h-screen" style={{ background: "var(--bg)" }}>
       {/* Hero */}
       <section className="pt-32 pb-16 relative overflow-hidden dot-grid"
-        style={{ background: "linear-gradient(160deg, #dbeafe 0%, #eff6ff 55%, #e0eeff 100%)" }}>
+        style={{ background: "linear-gradient(160deg, #ede9fe 0%, #e0eeff 40%, #f0f6ff 70%, #faf5ff 100%)" }}>
         <div className="dark:hidden absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(circle at 60% 40%, rgba(1,112,244,0.1) 0%, transparent 60%)" }} />
+          style={{ background: "radial-gradient(circle at 60% 40%, rgba(124,58,237,0.08) 0%, transparent 60%)" }} />
         <div className="hidden dark:block absolute inset-0"
-          style={{ background: "linear-gradient(160deg, #071630 0%, #10274b 55%, #0157c2 100%)" }} />
+          style={{ background: "linear-gradient(160deg, #071630 0%, #10274b 40%, #1e1146 100%)" }} />
 
         <div className="relative max-w-3xl mx-auto px-5 sm:px-8">
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
             <Link href="/"
-              className="inline-flex items-center gap-2 text-sm mb-8 transition-colors hover:text-[#0170f4]"
+              className="inline-flex items-center gap-2 text-sm mb-8 transition-colors hover:text-[#7c3aed]"
               style={{ color: "var(--text-muted)" }}>
               <ArrowLeft size={15} /> Back to Home
             </Link>
@@ -39,7 +39,7 @@ export default function LegalPage({ badge, title, lastUpdated, intro, sections }
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-5"
-            style={{ background: "var(--badge-bg)", borderColor: "rgba(1,112,244,0.25)", color: "var(--badge-color)" }}
+            style={{ background: "var(--badge-bg)", borderColor: "rgba(124,58,237,0.25)", color: "var(--badge-color)" }}
           >
             {badge}
           </motion.div>
@@ -111,7 +111,7 @@ export default function LegalPage({ badge, title, lastUpdated, intro, sections }
           >
             <p className="text-sm" style={{ color: "var(--text-muted)" }}>
               Questions about this policy? Contact us at{" "}
-              <a href="mailto:hello@PhileCoders.dev" className="font-semibold" style={{ color: "#0170f4" }}>
+              <a href="mailto:hello@PhileCoders.dev" className="font-semibold" style={{ color: "#7c3aed" }}>
                 hello@PhileCoders.dev
               </a>
             </p>

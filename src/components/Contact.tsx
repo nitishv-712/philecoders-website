@@ -11,6 +11,12 @@ const c = { ...contact, badge: contact.hero.badge, heading: contact.hero.heading
 
 const iconMap: Record<string, React.ElementType> = { Mail, Phone, MapPin };
 
+const infoAccents = [
+  { bg: "rgba(124,58,237,0.10)", color: "#7c3aed" },
+  { bg: "rgba(5,150,105,0.10)",  color: "#059669" },
+  { bg: "rgba(245,158,11,0.10)", color: "#f59e0b" },
+];
+
 export default function Contact() {
   const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-90px" });
@@ -34,10 +40,9 @@ export default function Contact() {
   return (
     <section id="contact" className="py-24 sm:py-32 relative overflow-hidden"
       style={{ background: "var(--bg-section)" }}>
-      <div className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(1,112,244,0.3), transparent)" }} />
+      <div className="section-divider absolute top-0 left-0 right-0" />
       <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(1,112,244,0.06) 0%, transparent 70%)" }} />
+        style={{ background: "radial-gradient(circle, rgba(124,58,237,0.05) 0%, transparent 70%)" }} />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div ref={ref} className="text-center mb-14">
@@ -45,7 +50,7 @@ export default function Contact() {
             initial={{ opacity: 0, y: 18 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium mb-4"
-            style={{ background: "var(--badge-bg)", borderColor: "rgba(1,112,244,0.2)", color: "var(--badge-color)" }}
+            style={{ background: "var(--badge-bg)", borderColor: "rgba(124,58,237,0.2)", color: "var(--badge-color)" }}
           >
             <MessageSquare size={13} /> {c.badge}
           </motion.div>
@@ -78,6 +83,7 @@ export default function Contact() {
           >
             {c.info.map((item, i) => {
               const Icon = iconMap[item.icon] ?? Mail;
+              const accent = infoAccents[i % infoAccents.length];
               return (
                 <motion.div
                   key={item.label}
@@ -88,7 +94,7 @@ export default function Contact() {
                   style={{ background: "var(--bg-card)", borderColor: "var(--border)" }}
                 >
                   <div className="w-11 h-11 rounded-xl flex items-center justify-center"
-                    style={{ background: "rgba(1,112,244,0.1)", color: "#0170f4" }}>
+                    style={{ background: accent.bg, color: accent.color }}>
                     <Icon size={19} />
                   </div>
                   <div>
@@ -104,11 +110,11 @@ export default function Contact() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.6 }}
               className="mt-1 p-6 rounded-2xl text-white shadow-xl"
-              style={{ background: "linear-gradient(135deg, #0157c2 0%, #0170f4 100%)", boxShadow: "0 20px 48px rgba(1,112,244,0.25)" }}
+              style={{ background: "linear-gradient(135deg, #7c3aed 0%, #0170f4 100%)", boxShadow: "0 20px 48px rgba(124,58,237,0.25)" }}
             >
               <div className="text-2xl mb-3">{c.cta.emoji}</div>
               <h3 className="font-bold text-lg mb-2">{c.cta.heading}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: "#c4dcfc" }}>{c.cta.text}</p>
+              <p className="text-sm leading-relaxed" style={{ color: "#ddd6fe" }}>{c.cta.text}</p>
             </motion.div>
           </motion.div>
 
@@ -130,9 +136,9 @@ export default function Contact() {
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 0.5 }}
                     className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
-                    style={{ background: "rgba(1,112,244,0.1)" }}
+                    style={{ background: "rgba(5,150,105,0.10)" }}
                   >
-                    <CheckCircle2 size={30} style={{ color: "#0170f4" }} />
+                    <CheckCircle2 size={30} style={{ color: "#059669" }} />
                   </motion.div>
                   <h3 className="text-xl font-bold mb-2" style={{ color: "var(--text-primary)" }}>{c.form.successTitle}</h3>
                   <p className="text-sm" style={{ color: "var(--text-muted)" }}>{c.form.successText}</p>
@@ -158,7 +164,7 @@ export default function Contact() {
                             border: "1px solid var(--input-border)",
                             color: "var(--text-primary)",
                           }}
-                          onFocus={(e) => (e.target.style.borderColor = "#0170f4")}
+                          onFocus={(e) => (e.target.style.borderColor = "#7c3aed")}
                           onBlur={(e)  => (e.target.style.borderColor = "var(--input-border)")}
                         />
                       </div>
@@ -178,7 +184,7 @@ export default function Contact() {
                         border: "1px solid var(--input-border)",
                         color: "var(--text-primary)",
                       }}
-                      onFocus={(e) => (e.target.style.borderColor = "#0170f4")}
+                      onFocus={(e) => (e.target.style.borderColor = "#7c3aed")}
                       onBlur={(e)  => (e.target.style.borderColor = "var(--input-border)")}
                     />
                   </div>
@@ -196,17 +202,17 @@ export default function Contact() {
                         border: "1px solid var(--input-border)",
                         color: "var(--text-primary)",
                       }}
-                      onFocus={(e) => (e.target.style.borderColor = "#0170f4")}
+                      onFocus={(e) => (e.target.style.borderColor = "#7c3aed")}
                       onBlur={(e)  => (e.target.style.borderColor = "var(--input-border)")}
                     />
                   </div>
                   <motion.button
                     type="submit"
                     disabled={loading}
-                    whileHover={{ scale: 1.02, boxShadow: "0 20px 40px rgba(1,112,244,0.3)" }}
+                    whileHover={{ scale: 1.02, boxShadow: "0 20px 40px rgba(124,58,237,0.25)" }}
                     whileTap={{ scale: 0.98 }}
                     className="w-full flex items-center justify-center gap-2 py-4 rounded-xl text-white font-semibold text-sm shadow-lg disabled:opacity-70 transition-all"
-                    style={{ background: "linear-gradient(90deg, #0157c2 0%, #0170f4 100%)" }}
+                    style={{ background: "linear-gradient(135deg, #0170f4 0%, #7c3aed 100%)" }}
                   >
                     {loading ? (
                       <motion.div
