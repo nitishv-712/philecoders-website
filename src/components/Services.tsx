@@ -246,7 +246,6 @@ export default function Services() {
           </motion.p>
         </div>
 
-        {/* Mosaic grid — 3 cols, auto rows of 180px */}
         <div
           className="grid grid-cols-3 gap-4"
           style={{ gridAutoRows: "180px" }}

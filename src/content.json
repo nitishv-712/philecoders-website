@@ -68,12 +68,14 @@
     ]
   },
   "cta": {
+    "badge": "Let's work together",
     "heading": "Ready to Build Something Great?",
     "subheading": "Book a free 30-minute discovery call. We'll listen to your goals and recommend the right approach — no commitment required.",
     "primaryLabel": "Start a Project",
     "primaryHref":  "/contact",
     "secondaryLabel": "View Our Work",
-    "secondaryHref":  "/contact"
+    "secondaryHref":  "/contact",
+    "socialProof": "Trusted by 200+ teams worldwide"
   },
   "services": {
     "badge": "What We Do",
