@@ -6,10 +6,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import dynamic from "next/dynamic";
 import content from "@/content.json";
 
-const ParticleSwarm = dynamic(() => import("@/components/ParticleSwarm"), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0 bg-black" />,
-});
+const ParticleSwarm = dynamic(() => import("@/components/ParticleSwarm"), { ssr: false });
 
 const { hero } = content;
 
@@ -143,6 +140,12 @@ export default function Hero() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const [showParticles, setShowParticles] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowParticles(true), 800);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <section
@@ -151,10 +154,15 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
       style={{ background: "#000" }}
     >
-      {/* Three.js Particle Swarm Background */}
       <div className="absolute inset-0 z-0">
-        <ParticleSwarm />
-        {/* Gradient overlay for text readability */}
+        <motion.div
+          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showParticles ? 1 : 0 }}
+          transition={{ duration: 1.2, ease: "easeIn" }}
+        >
+          {showParticles && <ParticleSwarm />}
+        </motion.div>
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
