@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { GitFork, Link2, X, Mail, ArrowUp, type LucideIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import content from "@/content.json";
 
@@ -46,7 +45,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <motion.div whileHover={{ scale: 1.02 }} className="flex items-center gap-2.5 mb-4">
-              <Image src="/pc-only.png" alt="PhileCoders logo" width={32} height={32} />
+              <img src="/pc-only.png" alt="PhileCoders logo" width={48} height={32} style={{ imageRendering: "crisp-edges" }} />
               <span className="font-bold text-[17px] tracking-tight" style={{ color: "var(--text-primary)" }}>
                 <span className="gradient-text">{site.name.slice(0, 5)}</span>{site.name.slice(5)}
               </span>

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import content from "@/content.json";
@@ -14,6 +13,9 @@ export default function Navbar() {
   const [isOpen,   setIsOpen]   = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  /* True when hero is dark (homepage, not scrolled) */
+  const isHeroDark = pathname === "/" && !scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -41,10 +43,37 @@ export default function Navbar() {
           {/* Logo */}
           <motion.div whileHover={{ scale: 1.02 }}>
             <Link href="/" className="flex items-center gap-2.5">
-              <Image src="/pc-only.png" alt="PhileCoders logo" width={32} height={32} priority />
-              <span className="font-bold text-[17px] tracking-tight">
-                <span className="gradient-text">{site.name.slice(0, 5)}</span>
-                <span style={{ color: "var(--text-primary)" }}>{site.name.slice(5)}</span>
+              <span className="relative w-[36px] h-[28px] flex-shrink-0">
+                {/* Colored logo (light backgrounds) */}
+                <img
+                  src="/logo-icon.png"
+                  alt="PhileCoders logo"
+                  width={36}
+                  height={28}
+                  className="absolute inset-0 w-full h-full object-contain transition-opacity duration-300"
+                  style={{ opacity: isHeroDark ? 0 : 1 }}
+                />
+                {/* White logo (dark backgrounds) */}
+                <img
+                  src="/logo-icon-white.png"
+                  alt=""
+                  width={36}
+                  height={28}
+                  className="absolute inset-0 w-full h-full object-contain transition-opacity duration-300"
+                  style={{ opacity: isHeroDark ? 1 : 0 }}
+                  aria-hidden="true"
+                />
+              </span>
+              <span className="font-bold text-[17px] tracking-tight transition-colors duration-300">
+                <span
+                  className={isHeroDark ? "" : "gradient-text"}
+                  style={isHeroDark ? { color: "#ffffff" } : undefined}
+                >
+                  {site.name.slice(0, 5)}
+                </span>
+                <span style={{ color: isHeroDark ? "rgba(255,255,255,0.85)" : "var(--text-primary)", transition: "color 0.3s" }}>
+                  {site.name.slice(5)}
+                </span>
               </span>
             </Link>
           </motion.div>
@@ -57,14 +86,14 @@ export default function Navbar() {
                   href={link.href}
                   className={`relative px-4 py-2 text-sm font-medium rounded-full transition-colors block ${
                     isActive(link.href)
-                      ? "text-[#7c3aed]"
-                      : "text-[#4a6080] hover:text-[#10274b]"
+                      ? isHeroDark ? "text-white" : "text-[#7c3aed]"
+                      : isHeroDark ? "text-white/70 hover:text-white" : "text-[#4a6080] hover:text-[#10274b]"
                   }`}
                 >
                   {isActive(link.href) && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-[#ede9fe]"
+                      className={`absolute inset-0 rounded-full ${isHeroDark ? "bg-white/15" : "bg-[#ede9fe]"}`}
                       transition={{ type: "spring", stiffness: 420, damping: 32 }}
                     />
                   )}
@@ -83,8 +112,12 @@ export default function Navbar() {
             >
               <Link
                 href="/contact"
-                className="flex items-center px-5 py-2 text-sm font-semibold text-white rounded-full shadow-lg shadow-[#7c3aed]/20 transition-all"
-                style={{ background: "linear-gradient(135deg, #0170f4 0%, #7c3aed 100%)" }}
+                className={`flex items-center px-5 py-2 text-sm font-semibold rounded-full shadow-lg transition-all ${
+                  isHeroDark
+                    ? "text-[#0e1525] bg-white shadow-white/15 hover:bg-white/90"
+                    : "text-white shadow-[#7c3aed]/20"
+                }`}
+                style={isHeroDark ? undefined : { background: "linear-gradient(135deg, #0170f4 0%, #7c3aed 100%)" }}
               >
                 {navbar.cta}
               </Link>
@@ -93,7 +126,9 @@ export default function Navbar() {
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
               whileTap={{ scale: 0.9 }}
-              className="md:hidden w-9 h-9 rounded-full flex items-center justify-center bg-[#ede9fe] text-[#7c3aed]"
+              className={`md:hidden w-9 h-9 rounded-full flex items-center justify-center ${
+                isHeroDark ? "bg-white/15 text-white" : "bg-[#ede9fe] text-[#7c3aed]"
+              }`}
             >
               <AnimatePresence mode="wait">
                 {isOpen
