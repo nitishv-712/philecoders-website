@@ -116,7 +116,7 @@ export default function Footer() {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-3"
           style={{ borderTop: "1px solid var(--border-soft)" }}>
           <p className="text-xs" style={{ color: "var(--text-faint)" }}>{f.copyright}</p>
-          <p className="text-xs px-3 py-1 rounded-full" style={{ color: "var(--text-faint)", background: "var(--badge-bg)" }}>{f.builtWith}</p>
+          {/* <p className="text-xs px-3 py-1 rounded-full" style={{ color: "var(--text-faint)", background: "var(--badge-bg)" }}>{f.builtWith}</p> */}
           <motion.button
             onClick={scrollTop}
             whileHover={{ scale: 1.1, y: -2 }}
